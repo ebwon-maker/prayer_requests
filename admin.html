@@ -6,17 +6,21 @@
 <title>기도 릴레이 - 관리자 페이지</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root { --teal: #0E3B3D; --gold: #D9A441; --bg: #F8F9FA; --border: #E2E8F0; }
+  :root { --teal: #0E3B3D; --gold: #D9A441; --bg: #F8F9FA; --border: #E2E8F0; --danger: #B4483C; }
   body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bg); color: #333; margin: 0; padding: 20px; }
-  .container { max-width: 1180px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+  .container { max-width: 1200px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
   #loginBox { max-width: 360px; margin: 80px auto; text-align: center; }
   #loginBox input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; box-sizing: border-box; }
   #loginBox button { width: 100%; padding: 12px; background: var(--teal); color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
   #adminContent { display: none; }
-  .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); padding-bottom: 16px; margin-bottom: 24px; }
+  .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); padding-bottom: 16px; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
   .header h1 { font-size: 22px; color: var(--teal); margin: 0; }
   .badge { background: var(--teal); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 14px; }
+  .header-btns { display: flex; gap: 8px; }
   .btn-excel { background: #107C41; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+  .btn-danger { background: var(--danger); color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+  .btn-delete { background: #fff; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; border-radius: 4px; font-size: 13px; font-weight: bold; cursor: pointer; }
+  .btn-delete:hover { background: var(--danger); color: #fff; }
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; text-align: left; font-size: 15px; }
   th, td { padding: 12px 14px; border-bottom: 1px solid var(--border); }
@@ -44,7 +48,10 @@
         <h1>캄보디아 기도 릴레이 신청 현황</h1>
         <p style="margin:5px 0 0; color:#64748B; font-size:14px;">총 <span id="totalCount" class="badge">0</span>건의 참여가 있습니다.</p>
       </div>
-      <button class="btn-excel" onclick="downloadCSV()">📊 엑셀 다운로드</button>
+      <div class="header-btns">
+        <button class="btn-excel" onclick="downloadCSV()">📊 엑셀 다운로드</button>
+        <button class="btn-danger" onclick="deleteAllData()">🚨 전체 데이터 일괄 파기</button>
+      </div>
     </div>
 
     <div class="table-wrap">
@@ -58,10 +65,11 @@
             <th>[필수] 개인정보 동의</th>
             <th>[선택] 마케팅/후원 동의</th>
             <th>신청 일시</th>
+            <th>관리</th>
           </tr>
         </thead>
         <tbody id="dataTable">
-          <tr><td colspan="7" style="text-align:center; padding:30px;">데이터를 불러오는 중입니다…</td></tr>
+          <tr><td colspan="8" style="text-align:center; padding:30px;">데이터를 불러오는 중입니다…</td></tr>
         </tbody>
       </table>
     </div>
@@ -70,7 +78,16 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { 
+    getFirestore, 
+    collection, 
+    getDocs, 
+    query, 
+    orderBy, 
+    doc, 
+    deleteDoc, 
+    writeBatch 
+  } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCBu_rDPo5M-loPv8UBnvh96JAKi1swbOU",
@@ -113,13 +130,14 @@
       document.getElementById('totalCount').textContent = querySnapshot.size;
 
       if(querySnapshot.empty) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px;">아직 접수된 데이터가 없습니다.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:30px;">아직 접수된 데이터가 없습니다.</td></tr>';
         return;
       }
 
       let index = querySnapshot.size;
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        const docId = docSnap.id;
         const dateStr = data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleString('ko-KR') : '-';
         
         // 필수 동의 여부 (기본값 true)
@@ -140,15 +158,20 @@
           date: dateStr
         });
 
+        const safeName = escapeHtml(data.name || '무명');
+
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${index}</td>
-          <td><b>${escapeHtml(data.name || '')}</b></td>
+          <td><b>${safeName}</b></td>
           <td>${escapeHtml(data.contact || '')}</td>
           <td class="msg-col">${escapeHtml(data.message || '')}</td>
           <td><span class="tag ${consentBool ? 'tag-yes' : 'tag-no'}">${consentText}</span></td>
           <td><span class="tag ${mktBool ? 'tag-yes' : 'tag-no'}">${mktText}</span></td>
           <td style="color:#64748B; font-size:13.5px;">${dateStr}</td>
+          <td>
+            <button class="btn-delete" onclick="deletePrayer('${docId}', '${safeName}')">삭제</button>
+          </td>
         `;
         tbody.appendChild(tr);
         index--;
@@ -163,6 +186,52 @@
   function escapeHtml(s){
     return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   }
+
+  // 1. 개별 데이터 삭제 함수
+  window.deletePrayer = async function(docId, name) {
+    if(!confirm(`'${name}' 님의 참여 데이터를 삭제하시겠습니까?`)) return;
+
+    try {
+      await deleteDoc(doc(db, "prayers", docId));
+      alert("삭제되었습니다.");
+      loadAdminData(); // 목록 새로고침
+    } catch(err) {
+      console.error(err);
+      alert("삭제 작업 중 오류가 발생했습니다.");
+    }
+  };
+
+  // 2. 전체 데이터 일괄 파기 함수 (캠페인 종료용)
+  window.deleteAllData = async function() {
+    const confirmText = prompt(
+      "⚠️ 모든 개인정보 및 응원 메시지가 데이터베이스에서 영구적으로 삭제됩니다.\n파기하시려면 아래에 [전체파기] 라고 입력해 주세요."
+    );
+
+    if (confirmText !== "전체파기") {
+      alert("입력값이 일치하지 않아 파기가 취소되었습니다.");
+      return;
+    }
+
+    try {
+      const querySnapshot = await getDocs(collection(db, "prayers"));
+      if (querySnapshot.empty) {
+        alert("파기할 데이터가 없습니다.");
+        return;
+      }
+
+      const batch = writeBatch(db);
+      querySnapshot.forEach((docSnap) => {
+        batch.delete(docSnap.ref);
+      });
+
+      await batch.commit();
+      alert("법적 기준에 따라 모든 개인정보가 완전히 파기되었습니다.");
+      loadAdminData(); // 목록 새로고침
+    } catch(err) {
+      console.error(err);
+      alert("전체 파기 중 오류가 발생했습니다.");
+    }
+  };
 
   window.downloadCSV = function() {
     if(!rawDataList.length) {

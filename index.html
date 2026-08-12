@@ -130,24 +130,6 @@
     cursor: pointer;
   }
 
-  /* 라디오 버튼 (후원 분야 선택) */
-  .support-options { display: flex; gap: 10px; }
-  .support-option {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 11px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: #fff;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-  }
-  .support-option input[type="radio"] { accent-color: var(--teal-deep); }
-
   /* 약관 상세보기 */
   .consent { margin-top: 6px; font-size: 12px; color: var(--text-sub); }
   .consent summary { cursor: pointer; color: var(--teal-light); margin-bottom: 4px; }
@@ -179,12 +161,6 @@
   .error-msg { color: #C5221F; font-size: 13px; margin-top: 8px; text-align: center; display: none; }
   .loading-note { color: var(--teal-light); font-size: 13px; margin-top: 8px; text-align: center; }
 
-  /* 최근 피드 섹션 */
-  .feed-section { margin-top: 32px; border-top: 2px solid var(--bg-sand); padding-top: 20px; }
-  .feed-title { font-size: 15px; font-weight: 700; color: var(--teal-deep); margin-bottom: 12px; }
-  .feed-item { background: #F8F9FA; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; font-size: 13px; }
-  .feed-item .who { font-weight: 700; color: var(--teal-deep); margin-right: 6px; }
-
   @media (max-width: 400px) {
     .support-grid { grid-template-columns: 1fr; }
   }
@@ -201,7 +177,7 @@
   <!-- 참여 현황 문구 -->
   <div class="counter" id="counterText">촛불을 불러오는 중…</div>
 
-  <!-- 후원 분야 안내 카두 -->
+  <!-- 후원 분야 안내 카드 -->
   <div class="support-section">
     <div class="support-title">여러분의 마음은 이렇게 전달됩니다</div>
     <div class="support-grid">
@@ -230,40 +206,25 @@
       </div>
     </div>
 
-    <!-- 2. 후원 분야 선택 -->
-    <div class="field">
-      <label class="label">함께 마음을 모을 후원 분야</label>
-      <div class="support-options">
-        <label class="support-option">
-          <input type="radio" name="supportType" value="치료지원" checked>
-          <span>🏥 치료 지원</span>
-        </label>
-        <label class="support-option">
-          <input type="radio" name="supportType" value="인재양성">
-          <span>🎓 인재 양성</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- 3. 응원 메시지 -->
+    <!-- 2. 응원 메시지 -->
     <div class="field">
       <label for="message" class="label">응원 메시지</label>
       <textarea id="message" class="textarea" placeholder="환우들과 의료진을 향한 따뜻한 응원의 한 줄을 남겨주세요." required></textarea>
     </div>
 
-    <!-- 4. 이름 -->
+    <!-- 3. 이름 -->
     <div class="field">
       <label for="name" class="label">이름</label>
       <input type="text" id="name" class="input" placeholder="이름을 입력하세요" required>
     </div>
 
-    <!-- 5. 연락처 -->
+    <!-- 4. 연락처 -->
     <div class="field">
       <label for="contact" class="label">연락처</label>
       <input type="tel" id="contact" class="input" placeholder="010-0000-0000" required>
     </div>
 
-    <!-- 6. 개인정보 수집·이용 동의 (필수) -->
+    <!-- 5. 개인정보 수집·이용 동의 (필수) -->
     <div class="field">
       <div class="check-row">
         <input type="checkbox" id="consentCheck" required>
@@ -282,7 +243,7 @@
       </details>
     </div>
 
-    <!-- 7. 마케팅 및 후원 안내 수신 동의 (선택) -->
+    <!-- 6. 마케팅 및 후원 안내 수신 동의 (선택) -->
     <div class="field">
       <div class="check-row">
         <input type="checkbox" id="marketingCheck">
@@ -305,14 +266,6 @@
     <div id="errorMsg" class="error-msg">모든 필수 항목을 입력하고 동의해 주세요.</div>
     <div id="loadingNote" class="loading-note"></div>
   </form>
-
-  <!-- 최근 참여 피드 -->
-  <div class="feed-section">
-    <div class="feed-title">최근 함께해 주신 마음들</div>
-    <div id="feedList">
-      <div style="font-size:12px; color:#888;">목록을 불러오는 중입니다…</div>
-    </div>
-  </div>
 </div>
 
 <script type="module">
@@ -323,7 +276,6 @@
     addDoc, 
     getDocs, 
     query, 
-    orderBy, 
     serverTimestamp 
   } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
@@ -341,41 +293,17 @@
   const db = getFirestore(app);
 
   const counterText = document.getElementById('counterText');
-  const feedList = document.getElementById('feedList');
   const form = document.getElementById('prayForm');
   const submitBtn = document.getElementById('submitBtn');
   const errorMsg = document.getElementById('errorMsg');
   const loadingNote = document.getElementById('loadingNote');
 
-  // 데이터 불러오기 (참여자 수 & 최근 메시지)
+  // 데이터 불러오기 (안내 문구 세팅)
   async function loadRelayData(){
     try {
-      const q = query(collection(db, "prayers"), orderBy("createdAt", "desc"));
-      const querySnapshot = await getDocs(q);
-
-      const totalCount = querySnapshot.size;
-      
-      // 참여 문구 변경
+      const q = query(collection(db, "prayers"));
+      await getDocs(q);
       counterText.textContent = '촛불을 밝혀 주셔 감사합니다.';
-
-      feedList.innerHTML = '';
-      if(querySnapshot.empty) {
-        feedList.innerHTML = '<div style="font-size:12px; color:#888;">첫 번째 촛불의 주인공이 되어주세요!</div>';
-        return;
-      }
-
-      let count = 0;
-      querySnapshot.forEach(docSnap => {
-        if(count >= 5) return; // 최근 5건만 표시
-        const data = docSnap.data();
-        
-        const item = document.createElement('div');
-        item.className = 'feed-item';
-        item.innerHTML = `<span class="who">${escapeHtml(maskName(data.name || '무명'))}님</span> ${escapeHtml(data.message || '')}`;
-        feedList.appendChild(item);
-        count++;
-      });
-
     } catch(err) {
       console.error(err);
       counterText.textContent = '촛불을 밝혀 주셔 감사합니다.';
@@ -392,11 +320,7 @@
     const name = document.getElementById('name').value.trim();
     const contact = document.getElementById('contact').value.trim();
     const consent = document.getElementById('consentCheck').checked;
-    
-    // 마케팅 동의 및 후원 분야 선택값 가져오기
     const marketingConsent = document.getElementById('marketingCheck').checked;
-    const supportTypeNode = document.querySelector('input[name="supportType"]:checked');
-    const supportType = supportTypeNode ? supportTypeNode.value : '치료지원';
 
     if(!prayed || !message || !name || !contact || !consent){
       errorMsg.style.display = 'block';
@@ -407,12 +331,10 @@
     loadingNote.textContent = '전송 중입니다…';
 
     try {
-      // Firebase DB에 동의 정보 및 선택 분야 포함하여 저장
       await addDoc(collection(db, "prayers"), {
         name: name,
         contact: contact,
         message: message,
-        supportType: supportType,
         prayed: true,
         consent: true,
         marketingConsent: marketingConsent,
@@ -423,9 +345,6 @@
       form.reset();
       loadingNote.textContent = '';
       submitBtn.disabled = false;
-      
-      // 최신 목록 다시 로드
-      loadRelayData();
 
     } catch(err) {
       console.error(err);
@@ -434,19 +353,6 @@
       submitBtn.disabled = false;
     }
   });
-
-  // 보안/XSS 방지용 태그 변환 함수
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
-
-  // 이름 마스킹 함수 (홍길동 -> 홍**님)
-  function maskName(name) {
-    if (!name) return '무명';
-    if (name.length <= 1) return name;
-    if (name.length === 2) return name[0] + '*';
-    return name[0] + '*'.repeat(name.length - 1);
-  }
 
   // 최초 데이터 로드 Execution
   loadRelayData();

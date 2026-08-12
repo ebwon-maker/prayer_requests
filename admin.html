@@ -8,7 +8,7 @@
 <style>
   :root { --teal: #0E3B3D; --gold: #D9A441; --bg: #F8F9FA; --border: #E2E8F0; --danger: #B4483C; }
   body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bg); color: #333; margin: 0; padding: 20px; }
-  .container { max-width: 1240px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+  .container { max-width: 1200px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
   #loginBox { max-width: 360px; margin: 80px auto; text-align: center; }
   #loginBox input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; box-sizing: border-box; }
   #loginBox button { width: 100%; padding: 12px; background: var(--teal); color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
@@ -26,11 +26,10 @@
   th, td { padding: 12px 14px; border-bottom: 1px solid var(--border); }
   th { background: #F1F5F9; color: #475569; font-weight: 700; white-space: nowrap; }
   tr:hover { background: #F8FAFC; }
-  .msg-col { max-width: 220px; word-break: break-all; }
+  .msg-col { max-width: 240px; word-break: break-all; }
   .tag { padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; display: inline-block; text-align: center; }
   .tag-yes { background: #E6F4EA; color: #137333; }
   .tag-no { background: #FCE8E6; color: #C5221F; }
-  .tag-type { background: #E0F2FE; color: #0369A1; } /* 후원 분야 태그 스타일 */
 </style>
 </head>
 <body>
@@ -62,7 +61,6 @@
             <th>#</th>
             <th>이름</th>
             <th>연락처</th>
-            <th>후원 분야</th> <!-- 👈 추가됨 -->
             <th>응원 메시지</th>
             <th>[필수] 개인정보 동의</th>
             <th>[선택] 마케팅/후원 동의</th>
@@ -71,7 +69,7 @@
           </tr>
         </thead>
         <tbody id="dataTable">
-          <tr><td colspan="9" style="text-align:center; padding:30px;">데이터를 불러오는 중입니다…</td></tr>
+          <tr><td colspan="8" style="text-align:center; padding:30px;">데이터를 불러오는 중입니다…</td></tr>
         </tbody>
       </table>
     </div>
@@ -132,7 +130,7 @@
       document.getElementById('totalCount').textContent = querySnapshot.size;
 
       if(querySnapshot.empty) {
-        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:30px;">아직 접수된 데이터가 없습니다.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:30px;">아직 접수된 데이터가 없습니다.</td></tr>';
         return;
       }
 
@@ -150,14 +148,10 @@
         const mktBool = !!data.marketingConsent;
         const mktText = mktBool ? '동의' : '미동의';
 
-        // 후원 분야 (기존 데이터 호환을 위해 기본값 지정)
-        const supportType = data.supportType || '치료지원';
-
         rawDataList.push({
           index: index,
           name: data.name || '',
           contact: data.contact || '',
-          supportType: supportType, // 👈 엑셀 저장을 위해 추가
           message: data.message || '',
           consent: consentText,
           mkt: mktText,
@@ -171,7 +165,6 @@
           <td>${index}</td>
           <td><b>${safeName}</b></td>
           <td>${escapeHtml(data.contact || '')}</td>
-          <td><span class="tag tag-type">${escapeHtml(supportType)}</span></td> <!-- 👈 후원 분야 출력 -->
           <td class="msg-col">${escapeHtml(data.message || '')}</td>
           <td><span class="tag ${consentBool ? 'tag-yes' : 'tag-no'}">${consentText}</span></td>
           <td><span class="tag ${mktBool ? 'tag-yes' : 'tag-no'}">${mktText}</span></td>
@@ -240,17 +233,17 @@
     }
   };
 
-  // 3. 엑셀(CSV) 다운로드 (후원분야 열 포함)
+  // 3. 엑셀(CSV) 다운로드
   window.downloadCSV = function() {
     if(!rawDataList.length) {
       alert('다운로드할 데이터가 없습니다.');
       return;
     }
 
-    let csv = '\uFEFF번호,이름,연락처,후원분야,응원메시지,개인정보수집동의(필수),마케팅후원안내동의(선택),신청일시\n';
+    let csv = '\uFEFF번호,이름,연락처,응원메시지,개인정보수집동의(필수),마케팅후원안내동의(선택),신청일시\n';
     rawDataList.forEach(row => {
       const msg = `"${row.message.replace(/"/g, '""')}"`;
-      csv += `${row.index},"${row.name}","${row.contact}","${row.supportType}",${msg},"${row.consent}","${row.mkt}","${row.date}"\n`;
+      csv += `${row.index},"${row.name}","${row.contact}",${msg},"${row.consent}","${row.mkt}","${row.date}"\n`;
     });
 
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });

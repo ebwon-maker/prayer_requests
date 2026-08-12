@@ -4,16 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>캄보디아 1분 기도 릴레이</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
     --teal-deep: #0E3B3D;
+    --teal-deeper: #0A2C2D;
     --teal-light: #1A5255;
     --gold: #D9A441;
+    --gold-deep: #B9822B;
     --bg-sand: #F4EFDF;
     --border: #E2E8F0;
     --text-main: #333333;
     --text-sub: #666666;
+    --danger: #B4483C;
   }
 
   * { box-sizing: border-box; }
@@ -22,7 +27,7 @@
     background-color: var(--bg-sand);
     color: var(--text-main);
     margin: 0;
-    padding: 20px 12px;
+    padding: 0;
     display: flex;
     justify-content: center;
   }
@@ -31,37 +36,98 @@
     width: 100%;
     max-width: 520px;
     background: #ffffff;
-    border-radius: 16px;
-    padding: 28px 20px;
     box-shadow: 0 8px 24px rgba(14, 59, 61, 0.08);
+    overflow: hidden;
   }
 
-  .header {
+  /* ---------- HERO SECTION ---------- */
+  .hero {
+    background: radial-gradient(120% 140% at 50% -10%, #144d4f 0%, var(--teal-deep) 55%, var(--teal-deeper) 100%);
+    color: #ffffff;
+    padding: 48px 20px 36px;
     text-align: center;
-    margin-bottom: 24px;
   }
-  .header h1 {
-    font-size: 22px;
-    color: var(--teal-deep);
-    margin: 0 0 8px 0;
-    font-weight: 700;
-  }
-  .header p {
+  .eyebrow {
     font-size: 14px;
-    color: var(--text-sub);
-    margin: 0;
+    letter-spacing: .12em;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.45;
+    margin: 0 0 16px;
+    word-break: keep-all;
+    color: #ffffff;
+  }
+  .hero p {
+    font-size: 15px;
+    color: #DCEAE6;
+    margin: 0 auto;
     line-height: 1.5;
+    word-break: keep-all;
   }
 
+  /* CANDLE RELAY & COUNTER */
+  .relay-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 28px 0 12px;
+    flex-wrap: wrap;
+  }
+  .candle {
+    width: 20px;
+    height: 32px;
+    position: relative;
+    opacity: .35;
+    transition: opacity .4s ease;
+  }
+  .candle.lit {
+    opacity: 1;
+  }
+  .candle .flame {
+    width: 10px;
+    height: 14px;
+    background: linear-gradient(180deg, #FFE49A, var(--gold) 60%, var(--gold-deep));
+    border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+    position: absolute;
+    left: 5px;
+    top: 0;
+    filter: drop-shadow(0 0 6px rgba(217, 164, 65, .8));
+    animation: flicker 2.4s ease-in-out infinite;
+  }
+  .candle:not(.lit) .flame {
+    background: #3a4a49;
+    filter: none;
+    animation: none;
+  }
+  .candle .stick {
+    width: 6px;
+    height: 18px;
+    background: #EDE3C8;
+    position: absolute;
+    left: 7px;
+    top: 13px;
+    border-radius: 1px;
+  }
+  @keyframes flicker {
+    0%, 100% { transform: scale(1) translateY(0); }
+    50% { transform: scale(1.08, 0.95) translateY(-1px); }
+  }
   .counter {
-    background: var(--teal-deep);
+    font-size: 15px;
     color: var(--gold);
-    text-align: center;
-    padding: 14px;
-    border-radius: 10px;
     font-weight: 700;
-    font-size: 16px;
-    margin-bottom: 24px;
+    letter-spacing: .02em;
+  }
+
+  /* ---------- MAIN CONTENT SECTION ---------- */
+  .content {
+    padding: 28px 20px 40px;
   }
 
   /* 후원 분야 안내 섹션 */
@@ -158,7 +224,7 @@
   .submit-btn:hover { background: var(--teal-light); }
   .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
 
-  .error-msg { color: #C5221F; font-size: 13px; margin-top: 8px; text-align: center; display: none; }
+  .error-msg { color: var(--danger); font-size: 13px; margin-top: 8px; text-align: center; display: none; }
   .loading-note { color: var(--teal-light); font-size: 13px; margin-top: 8px; text-align: center; }
 
   @media (max-width: 400px) {
@@ -169,113 +235,112 @@
 <body>
 
 <div class="container">
-  <div class="header">
-    <h1>캄보디아 기도 릴레이</h1>
-    <p>아픈 이들에게 희망을, 현지 의료진에게 힘을 보태어 주세요.</p>
+  <!-- 히어로(HERO) 영역 -->
+  <div class="hero">
+    <div class="eyebrow">캄보디아를 품는 1분 기도 &amp; 응원 릴레이</div>
+    <h1>현장에는 생명과 미래가,<br>한국에는 기도하는 당신이 있습니다.</h1>
+    <p>카카오톡으로 온 이 링크, 딱 1분만 시간 내주세요.<br>기도와 응원 한 줄이면 충분합니다.</p>
+
+    <!-- 양초 릴레이 ROW -->
+    <div class="relay-row" id="relayRow"></div>
+    <!-- 참여 현황 문구 -->
+    <div class="counter" id="counterText">지금까지 함께한 마음을 불러오는 중…</div>
   </div>
 
-  <!-- 참여 현황 문구 -->
-  <div class="counter" id="counterText">촛불을 불러오는 중…</div>
-
-  <!-- 후원 분야 안내 카드 -->
-  <div class="support-section">
-    <div class="support-title">여러분의 마음은 이렇게 전달됩니다</div>
-    <div class="support-grid">
-      <div class="support-card">
-        <div class="support-icon">🏥</div>
-        <h4>치료 지원</h4>
-        <p>의료·행정 전산화와 후원 기획을 바탕으로 12개 전문 진료과 무상 진료, 현지 심장·외과 수술, 선천성 심질환 아동 국내 초청 수술을 지원하며 캄보디아 소외계층의 의료 접근성과 삶의 질을 높이고 있습니다.</p>
-      </div>
-      <div class="support-card">
-        <div class="support-icon">🎓</div>
-        <h4>인재 양성</h4>
-        <p>현지 의료진·행정직원의 한국 초청연수와 간호대학 및 레지던트 장학사업을 통해 캄보디아의 의료 역량을 높이고 지속 가능한 의료자립 환경을 조성하고 있습니다.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- 신청 폼 -->
-  <form id="prayForm">
-    <!-- 1. 필수 기도 동의 -->
-    <div class="field">
-      <div class="check-row">
-        <input type="checkbox" id="prayCheck" required>
-        <label for="prayCheck" class="txt" style="margin:0;font-weight:500;cursor:pointer;">
-          캄보디아 환우와 의료진을 위해 1분간 기도로 함께합니다
-        </label>
-      </div>
-    </div>
-
-    <!-- 2. 응원 메시지 -->
-  <!-- 기존코드
-    <div class="field">
-      <label for="message" class="label">응원 메시지</label>
-     <textarea id="message" class="textarea" placeholder="환우들과 의료진을 향한 따뜻한 응원의 한 줄을 남겨주세요." required></textarea>
-    </div> -->
-
-<!-- 수정 코드 (maxlength 속성 및 안내 문구 추가) -->
-<div class="field">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-    <label for="message" class="label" style="margin-bottom:0;">응원 메시지</label>
-    <span id="charCount" style="font-size:12px; color:#888;">0 / 200자</span>
-  </div>
-  <textarea id="message" class="textarea" maxlength="200" placeholder="환우들과 의료진을 향한 따뜻한 응원의 한 줄을 남겨주세요. (최대 200자)" required></textarea>
-</div>
-
-    <!-- 3. 이름 -->
-    <div class="field">
-      <label for="name" class="label">이름</label>
-      <input type="text" id="name" class="input" placeholder="이름을 입력하세요" required>
-    </div>
-
-    <!-- 4. 연락처 -->
-    <div class="field">
-      <label for="contact" class="label">연락처</label>
-      <input type="tel" id="contact" class="input" placeholder="010-0000-0000" required>
-    </div>
-
-    <!-- 5. 개인정보 수집·이용 동의 (필수) -->
-    <div class="field">
-      <div class="check-row">
-        <input type="checkbox" id="consentCheck" required>
-        <label for="consentCheck" class="txt" style="margin:0;font-weight:500;cursor:pointer;">
-          [필수] 개인정보 수집·이용에 동의합니다
-        </label>
-      </div>
-      <details class="consent">
-        <summary>동의 내용 자세히 보기</summary>
-        <div class="box">
-          · <strong>수집·이용 목적:</strong> 기도 릴레이 참여 접수 및 응원 메시지 게시<br>
-          · <strong>수집 항목:</strong> 이름, 연락처, 응원 메시지<br>
-          · <strong>보유 및 이용 기간:</strong> 목적 달성 후 지체 없이 파기<br>
-          · <strong>동의 거부 권리:</strong> 동의를 거부할 수 있으나, 미동의 시 릴레이 참여가 제한됩니다.
+  <div class="content">
+    <!-- 후원 분야 안내 카드 -->
+    <div class="support-section">
+      <div class="support-title">여러분의 마음은 이렇게 전달됩니다</div>
+      <div class="support-grid">
+        <div class="support-card">
+          <div class="support-icon">🏥</div>
+          <h4>치료 지원</h4>
+          <p>의료·행정 전산화와 후원 기획을 바탕으로 12개 전문 진료과 무상 진료, 현지 심장·외과 수술, 선천성 심질환 아동 국내 초청 수술을 지원하며 캄보디아 소외계층의 의료 접근성과 삶의 질을 높이고 있습니다.</p>
         </div>
-      </details>
-    </div>
-
-    <!-- 6. 마케팅 및 후원 안내 수신 동의 (선택) -->
-    <div class="field">
-      <div class="check-row">
-        <input type="checkbox" id="marketingCheck">
-        <label for="marketingCheck" class="txt" style="margin:0;font-weight:500;cursor:pointer;">
-          [선택] 선교·후원 소식 및 안내 수신에 동의합니다
-        </label>
-      </div>
-      <details class="consent">
-        <summary>동의 내용 자세히 보기</summary>
-        <div class="box">
-          · <strong>수집·이용 목적:</strong> 캄보디아 선교 현장 소식, 후원 안내 및 캠페인 전달 (SMS/알림톡/메일)<br>
-          · <strong>수집 항목:</strong> 이름, 연락처<br>
-          · <strong>보유 및 이용 기간:</strong> 동의 철회 시 또는 서비스 종료 시까지<br>
-          · <strong>동의 거부 권리:</strong> 동의하지 않으셔도 1분 기도 릴레이 참여에 제한이 없습니다.
+        <div class="support-card">
+          <div class="support-icon">🎓</div>
+          <h4>인재 양성</h4>
+          <p>현지 의료진·행정직원의 한국 초청연수와 간호대학 및 레지던트 장학사업을 통해 캄보디아의 의료 역량을 높이고 지속 가능한 의료자립 환경을 조성하고 있습니다.</p>
         </div>
-      </details>
+      </div>
     </div>
 
-    <button type="submit" id="submitBtn" class="submit-btn">기도 릴레이 참여하기 🕯️</button>
-    <div id="errorMsg" class="error-msg">모든 필수 항목을 입력하고 동의해 주세요.</div>
-    <div id="loadingNote" class="loading-note"></div>
-  </form>
+    <!-- 신청 폼 -->
+    <form id="prayForm">
+      <!-- 1. 필수 기도 동의 -->
+      <div class="field">
+        <div class="check-row">
+          <input type="checkbox" id="prayCheck" required>
+          <label for="prayCheck" class="txt" style="margin:0;font-weight:500;cursor:pointer;">
+            캄보디아 환우와 의료진을 위해 1분간 기도로 함께합니다
+          </label>
+        </div>
+      </div>
+
+      <!-- 2. 응원 메시지 (maxlength 및 실시간 글자수 추가) -->
+      <div class="field">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <label for="message" class="label" style="margin-bottom:0;">응원 메시지</label>
+          <span id="charCount" style="font-size:12px; color:#888;">0 / 200자</span>
+        </div>
+        <textarea id="message" class="textarea" maxlength="200" placeholder="환우들과 의료진을 향한 따뜻한 응원의 한 줄을 남겨주세요. (최대 200자)" required></textarea>
+      </div>
+
+      <!-- 3. 이름 -->
+      <div class="field">
+        <label for="name" class="label">이름</label>
+        <input type="text" id="name" class="input" placeholder="이름을 입력하세요" required>
+      </div>
+
+      <!-- 4. 연락처 -->
+      <div class="field">
+        <label for="contact" class="label">연락처</label>
+        <input type="tel" id="contact" class="input" placeholder="010-0000-0000" required>
+      </div>
+
+      <!-- 5. 개인정보 수집·이용 동의 (필수) -->
+      <div class="field">
+        <div class="check-row">
+          <input type="checkbox" id="consentCheck" required>
+          <label for="consentCheck" class="txt" style="margin:0;font-weight:500;cursor:pointer;">
+            [필수] 개인정보 수집·이용에 동의합니다
+          </label>
+        </div>
+        <details class="consent">
+          <summary>동의 내용 자세히 보기</summary>
+          <div class="box">
+            · <strong>수집·이용 목적:</strong> 기도 릴레이 참여 접수 및 응원 메시지 게시<br>
+            · <strong>수집 항목:</strong> 이름, 연락처, 응원 메시지<br>
+            · <strong>보유 및 이용 기간:</strong> 목적 달성 후 지체 없이 파기<br>
+            · <strong>동의 거부 권리:</strong> 동의를 거부할 수 있으나, 미동의 시 릴레이 참여가 제한됩니다.
+          </div>
+        </details>
+      </div>
+
+      <!-- 6. 마케팅 및 후원 안내 수신 동의 (선택) -->
+      <div class="field">
+        <div class="check-row">
+          <input type="checkbox" id="marketingCheck">
+          <label for="marketingCheck" class="txt" style="margin:0;font-weight:500;cursor:pointer;">
+            [선택] 선교·후원 소식 및 안내 수신에 동의합니다
+          </label>
+        </div>
+        <details class="consent">
+          <summary>동의 내용 자세히 보기</summary>
+          <div class="box">
+            · <strong>수집·이용 목적:</strong> 캄보디아 선교 현장 소식, 후원 안내 및 캠페인 전달 (SMS/알림톡/메일)<br>
+            · <strong>수집 항목:</strong> 이름, 연락처<br>
+            · <strong>보유 및 이용 기간:</strong> 동의 철회 시 또는 서비스 종료 시까지<br>
+            · <strong>동의 거부 권리:</strong> 동의하지 않으셔도 1분 기도 릴레이 참여에 제한이 없습니다.
+          </div>
+        </details>
+      </div>
+
+      <button type="submit" id="submitBtn" class="submit-btn">기도 릴레이 참여하기 🕯️</button>
+      <div id="errorMsg" class="error-msg">모든 필수 항목을 입력하고 동의해 주세요.</div>
+      <div id="loadingNote" class="loading-note"></div>
+    </form>
+  </div>
 </div>
 
 <script type="module">
@@ -302,28 +367,54 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
+  const relayRow = document.getElementById('relayRow');
   const counterText = document.getElementById('counterText');
   const form = document.getElementById('prayForm');
   const submitBtn = document.getElementById('submitBtn');
   const errorMsg = document.getElementById('errorMsg');
   const loadingNote = document.getElementById('loadingNote');
-
   const messageInput = document.getElementById('message');
-const charCount = document.getElementById('charCount');
+  const charCount = document.getElementById('charCount');
 
-messageInput.addEventListener('input', function() {
-  charCount.textContent = `${this.value.length} / 200자`;
-});
+  // 🕯️ 12개 양초 요소 동적 생성
+  const CANDLE_COUNT = 12;
+  for (let i = 0; i < CANDLE_COUNT; i++) {
+    const c = document.createElement('div');
+    c.className = 'candle';
+    c.innerHTML = '<div class="flame"></div><div class="stick"></div>';
+    relayRow.appendChild(c);
+  }
 
-  // 데이터 불러오기 (안내 문구 세팅)
+  // 참여 수에 따른 양초 불켜기 함수
+  function lightCandles(count) {
+    const candles = relayRow.querySelectorAll('.candle');
+    const litCount = Math.min(count, CANDLE_COUNT);
+    candles.forEach((c, i) => {
+      if (i < litCount) {
+        c.classList.add('lit');
+      } else {
+        c.classList.remove('lit');
+      }
+    });
+  }
+
+  // 글자수 실시간 반영
+  messageInput.addEventListener('input', function() {
+    charCount.textContent = `${this.value.length} / 200자`;
+  });
+
+  // 데이터 불러오기 (참여 수 및 양초 상태 업데이트)
   async function loadRelayData(){
     try {
       const q = query(collection(db, "prayers"));
-      await getDocs(q);
-      counterText.textContent = '촛불을 밝혀 주셔 감사합니다.';
+      const querySnapshot = await getDocs(q);
+      const totalCount = querySnapshot.size;
+      
+      counterText.textContent = `지금까지 ${totalCount.toLocaleString('ko-KR')}명이 함께했습니다`;
+      lightCandles(totalCount);
     } catch(err) {
       console.error(err);
-      counterText.textContent = '촛불을 밝혀 주셔 감사합니다.';
+      counterText.textContent = '지금까지 함께한 마음을 불러오는 중…';
     }
   }
 
@@ -360,8 +451,12 @@ messageInput.addEventListener('input', function() {
 
       alert('함께 마음을 모아주셔서 감사합니다! 촛불이 전달되었습니다.');
       form.reset();
+      charCount.textContent = '0 / 200자';
       loadingNote.textContent = '';
       submitBtn.disabled = false;
+
+      // 작성 완료 후 최신 인원 및 촛불 업데이트
+      loadRelayData();
 
     } catch(err) {
       console.error(err);
@@ -371,7 +466,7 @@ messageInput.addEventListener('input', function() {
     }
   });
 
-  // 최초 데이터 로드 Execution
+  // 최초 데이터 로드
   loadRelayData();
 </script>
 

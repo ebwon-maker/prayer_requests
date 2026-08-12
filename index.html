@@ -2,354 +2,331 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title>캄보디아를 품는 1분 기도 & 응원 릴레이</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>캄보디아 1분 기도 릴레이</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --teal-deep:#0E3B3D;
-    --teal-deeper:#0A2C2D;
-    --cream:#FBF7ED;
-    --ink:#1C2B2A;
-    --gold:#D9A441;
-    --gold-deep:#B9822B;
-    --sage:#6B9080;
-    --border:#DCD4C0;
-    --danger:#B4483C;
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:var(--cream);
-    color:var(--ink);
-    font-family:'Noto Sans KR', sans-serif;
-    font-size:18px;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-  }
-  .wrap{max-width:640px;margin:0 auto;}
-
-  /* HERO */
-  .hero{
-    background:radial-gradient(120% 140% at 50% -10%, #144d4f 0%, var(--teal-deep) 55%, var(--teal-deeper) 100%);
-    color:var(--cream);
-    padding:56px 24px 44px;
-    text-align:center;
-  }
-  .eyebrow{
-    font-size:15px;
-    letter-spacing:.14em;
-    color:var(--gold);
-    font-weight:700;
-    margin-bottom:18px;
-  }
-  h1{
-    font-family:'Noto Serif KR', serif;
-    font-weight:700;
-    font-size:30px;
-    line-height:1.45;
-    margin:0 0 18px;
-    word-break:keep-all;
-  }
-  .hero p{
-    font-size:17px;
-    color:#DCEAE6;
-    margin:0 auto;
-    max-width:420px;
-    word-break:keep-all;
+  :root {
+    --teal-deep: #0E3B3D;
+    --teal-light: #1A5255;
+    --gold: #D9A441;
+    --bg-sand: #F4EFDF;
+    --border: #E2E8F0;
+    --text-main: #333333;
+    --text-sub: #666666;
   }
 
-  /* candle relay row */
-  .relay-row{
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    margin:32px 0 8px;
-    flex-wrap:wrap;
-  }
-  .candle{width:22px;height:34px;position:relative;opacity:.35;transition:opacity .4s ease;}
-  .candle.lit{opacity:1;}
-  .candle .flame{
-    width:10px;height:14px;
-    background:linear-gradient(180deg,#FFE49A, var(--gold) 60%, var(--gold-deep));
-    border-radius:50% 50% 50% 50% / 65% 65% 35% 35%;
-    position:absolute;left:6px;top:0;
-    filter:drop-shadow(0 0 6px rgba(217,164,65,.8));
-    animation:flicker 2.4s ease-in-out infinite;
-  }
-  .candle.lit .flame{animation:flicker 2.4s ease-in-out infinite;}
-  .candle:not(.lit) .flame{background:#3a4a49;filter:none;animation:none;}
-  .candle .stick{
-    width:6px;height:20px;background:#EDE3C8;position:absolute;left:8px;top:13px;border-radius:1px;
-  }
-  @keyframes flicker{
-    0%,100%{transform:scale(1) translateY(0);}
-    50%{transform:scale(1.08,0.95) translateY(-1px);}
-  }
- .counter{
-    font-size:15px;
-    color:var(--gold);
-    font-weight:700;
-    letter-spacing:.02em;
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: var(--bg-sand);
+    color: var(--text-main);
+    margin: 0;
+    padding: 20px 12px;
+    display: flex;
+    justify-content: center;
   }
 
-  /* CONTENT */
-  .content{padding:36px 20px 64px;}
-  .card{
-    background:#fff;
-    border:1px solid var(--border);
-    border-radius:16px;
-    padding:26px 22px;
-    margin-bottom:20px;
-  }
-  .intro-card p{margin:0;word-break:keep-all;font-size:17px;}
-  .intro-card strong{color:var(--teal-deep);}
-
-  .form-title{
-    font-family:'Noto Serif KR', serif;
-    font-size:22px;
-    font-weight:700;
-    color:var(--teal-deep);
-    margin:0 0 22px;
-    text-align:center;
+  .container {
+    width: 100%;
+    max-width: 520px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 28px 20px;
+    box-shadow: 0 8px 24px rgba(14, 59, 61, 0.08);
   }
 
-  .field{margin-bottom:22px;}
-  .field label{
-    display:block;
-    font-weight:700;
-    font-size:16px;
-    margin-bottom:8px;
-    color:var(--teal-deep);
+  .header {
+    text-align: center;
+    margin-bottom: 24px;
   }
-  .field .req{color:var(--danger);margin-left:2px;}
-  input[type="text"], input[type="tel"], textarea{
-    width:100%;
-    font-family:inherit;
-    font-size:18px;
-    padding:14px 14px;
-    border:1.5px solid var(--border);
-    border-radius:10px;
-    background:#FDFCF8;
-    color:var(--ink);
+  .header h1 {
+    font-size: 22px;
+    color: var(--teal-deep);
+    margin: 0 0 8px 0;
+    font-weight: 700;
   }
-  input:focus, textarea:focus{
-    outline:3px solid rgba(217,164,65,.45);
-    border-color:var(--gold);
-  }
-  textarea{min-height:96px;resize:vertical;}
-
-  .check-row{
-    display:flex;
-    align-items:flex-start;
-    gap:12px;
-    background:#F4EFDF;
-    border:1.5px solid var(--border);
-    border-radius:12px;
-    padding:16px;
-  }
-  .check-row input[type="checkbox"]{
-    width:24px;height:24px;flex:none;margin-top:2px;accent-color:var(--teal-deep);
-  }
-  .check-row .txt{font-size:16.5px;font-weight:500;word-break:keep-all;}
-
-  details.consent{margin-top:10px;}
-  details.consent summary{
-    cursor:pointer;font-size:14.5px;color:#5b6b69;font-weight:500;
-  }
-  details.consent .box{
-    margin-top:10px;font-size:13.5px;color:#5b6b69;line-height:1.7;
-    background:#F7F4EC;border-radius:8px;padding:12px 14px;
+  .header p {
+    font-size: 14px;
+    color: var(--text-sub);
+    margin: 0;
+    line-height: 1.5;
   }
 
-  button.submit{
-    width:100%;
-    background:var(--teal-deep);
-    color:#fff;
-    font-family:inherit;
-    font-weight:700;
-    font-size:19px;
-    border:none;
-    border-radius:12px;
-    padding:18px;
-    cursor:pointer;
-    transition:background .2s ease, transform .1s ease;
-  }
-  button.submit:hover{background:#0a2d2e;}
-  button.submit:active{transform:scale(.99);}
-  button.submit:disabled{background:#9aa7a5;cursor:not-allowed;}
-
-  .error-msg{
-    color:var(--danger);
-    font-size:14.5px;
-    font-weight:700;
-    margin-top:8px;
-    display:none;
+  .counter {
+    background: var(--teal-deep);
+    color: var(--gold);
+    text-align: center;
+    padding: 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 24px;
   }
 
-  /* THANK YOU */
-  .thanks{display:none;text-align:center;padding:6px 4px 4px;}
-  .thanks .mark{
-    width:64px;height:64px;border-radius:50%;
-    background:var(--gold);
-    display:flex;align-items:center;justify-content:center;
-    margin:0 auto 20px;
+  /* 후원 분야 안내 섹션 */
+  .support-section {
+    margin-bottom: 24px;
   }
-  .thanks .mark svg{width:32px;height:32px;}
-  .thanks h2{
-    font-family:'Noto Serif KR', serif;
-    font-size:23px;color:var(--teal-deep);margin:0 0 10px;word-break:keep-all;
+  .support-title {
+    font-size: 15px;
+    color: var(--teal-deep);
+    margin: 0 0 12px 0;
+    font-weight: 700;
+    text-align: center;
   }
-  .thanks p{font-size:16.5px;color:#3c4a48;margin:0 0 26px;word-break:keep-all;}
+  .support-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .support-card {
+    background: #FDFBF7;
+    border: 1px solid #EFE6D5;
+    border-radius: 10px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .support-icon { font-size: 24px; margin-bottom: 4px; }
+  .support-card h4 { margin: 0 0 4px 0; font-size: 14px; color: var(--teal-deep); font-weight: 700; }
+  .support-card p { margin: 0; font-size: 12px; color: var(--text-sub); line-height: 1.4; word-break: keep-all; }
 
-  .feed{text-align:left;}
-  .feed-title{font-size:14px;font-weight:700;color:#6b7876;letter-spacing:.04em;margin-bottom:12px;}
-  .feed-item{
-    background:#F7F4EC;border-radius:10px;padding:12px 14px;margin-bottom:8px;font-size:15.5px;
+  /* 폼 요소 스타일 */
+  .field { margin-bottom: 18px; }
+  .label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--teal-deep);
+    margin-bottom: 6px;
   }
-  .feed-item .who{font-weight:700;color:var(--teal-deep);margin-right:6px;}
+  .input, .textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border 0.2s;
+  }
+  .input:focus, .textarea:focus { border-color: var(--teal-deep); }
+  .textarea { resize: vertical; min-height: 80px; }
 
-  footer{
-    text-align:center;padding:26px 20px 40px;color:#8a938f;font-size:13px;line-height:1.8;
+  /* 체크박스 영역 */
+  .check-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #F8F9FA;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .check-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--teal-deep);
+    cursor: pointer;
   }
 
-  .loading-note{
-    text-align:center;font-size:13.5px;color:#8a938f;padding:10px 0 0;
+  /* 라디오 버튼 (후원 분야 선택) */
+  .support-options { display: flex; gap: 10px; }
+  .support-option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 11px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .support-option input[type="radio"] { accent-color: var(--teal-deep); }
+
+  /* 약관 상세보기 */
+  .consent { margin-top: 6px; font-size: 12px; color: var(--text-sub); }
+  .consent summary { cursor: pointer; color: var(--teal-light); margin-bottom: 4px; }
+  .consent .box {
+    background: #F8F9FA;
+    padding: 10px;
+    border-radius: 6px;
+    line-height: 1.6;
+    border: 1px solid var(--border);
   }
 
-  @media (max-width:380px){
-    h1{font-size:26px;}
-    .content{padding:28px 14px 50px;}
+  /* 버튼 및 메세지 */
+  .submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--teal-deep);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+  }
+  .submit-btn:hover { background: var(--teal-light); }
+  .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+  .error-msg { color: #C5221F; font-size: 13px; margin-top: 8px; text-align: center; display: none; }
+  .loading-note { color: var(--teal-light); font-size: 13px; margin-top: 8px; text-align: center; }
+
+  /* 최근 피드 섹션 */
+  .feed-section { margin-top: 32px; border-top: 2px solid var(--bg-sand); padding-top: 20px; }
+  .feed-title { font-size: 15px; font-weight: 700; color: var(--teal-deep); margin-bottom: 12px; }
+  .feed-item { background: #F8F9FA; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; font-size: 13px; }
+  .feed-item .who { font-weight: 700; color: var(--teal-deep); margin-right: 6px; }
+
+  @media (max-width: 400px) {
+    .support-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
-<div class="wrap">
-  <div class="hero">
-    <div class="eyebrow">캄보디아를 품는 1분 기도 &amp; 응원 릴레이</div>
-    <h1>현장에는 의사가,<br>한국에는 기도하는 당신이 있습니다.</h1>
-    <p>카카오톡으로 온 이 링크, 딱 1분만 시간 내주세요.<br>기도와 응원 한 줄이면 충분합니다.</p>
-
-    <div class="relay-row" id="relayRow"></div>
-    <!-- ✂️ 기존 코드 -->
-    <!--
-    <div class="counter" id="counterText">지금까지 함께한 마음을 불러오는 중…</div>
-    -->
-    <!-- 💡 수정 후 -->
-    <div class="counter" id="counterText">촛불을 불러오는 중…</div>
+<div class="container">
+  <div class="header">
+    <h1>🇰🇭 캄보디아 기도 릴레이</h1>
+    <p>아픈 이들에게 희망을, 현지 의료진에게 힘을 보태어 주세요.</p>
   </div>
 
-  <div class="content">
+  <!-- 참여 현황 문구 -->
+  <div class="counter" id="counterText">촛불을 불러오는 중…</div>
 
-    <div class="card intro-card">
-      <p>캄보디아 <strong>헤브론의료원(HMC)</strong>에서는 오늘도 형편이 어려운 환우들을 돌보는 의료진이 있습니다.
-      이곳까지 마음을 보내는 가장 쉬운 방법, <strong>1분 기도</strong>부터 시작해 주세요.</p>
-    </div>
-
-    <div class="card" id="formCard">
-      <div class="form-title">1분 기도 &amp; 응원 남기기</div>
-
-      <form id="prayerForm" novalidate>
-
-        <div class="field">
-          <div class="check-row">
-            <input type="checkbox" id="prayCheck" required>
-            <label for="prayCheck" class="txt" style="margin:0;font-weight:500;">
-              캄보디아 환우와 의료진을 위해 1분 기도에 동참합니다.
-            </label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="message">응원 한 줄 남기기<span class="req">*</span></label>
-          <textarea id="message" maxlength="200" placeholder="예: 오늘도 힘내세요, 늘 응원합니다" required></textarea>
-        </div>
-
-        <div class="field">
-          <label for="name">이름<span class="req">*</span></label>
-          <input type="text" id="name" placeholder="홍길동" required>
-        </div>
-
-        <div class="field">
-          <label for="contact">연락처<span class="req">*</span></label>
-          <input type="tel" id="contact" placeholder="010-0000-0000" required>
-        </div>
-
-
-<!-- 개인정보 수집·이용 동의 (필수) -->
-<div class="field">
-  <div class="check-row">
-    <input type="checkbox" id="consentCheck" required>
-    <label for="consentCheck" class="txt" style="margin:0;font-weight:500;">
-      [필수] 개인정보 수집·이용에 동의합니다
-    </label>
-  </div>
-  <details class="consent">
-    <summary>동의 내용 자세히 보기</summary>
-    <div class="box">
-      · <strong>수집·이용 목적:</strong> 기도 릴레이 참여 접수 및 응원 메시지 게시<br>
-      · <strong>수집 항목:</strong> 이름, 연락처, 응원 메시지<br>
-      · <strong>보유 및 이용 기간:</strong> 목적 달성 후 지체 없이 파기<br>
-      · <strong>동의 거부 권리:</strong> 동의를 거부할 수 있으나, 미동의 시 릴레이 참여가 제한됩니다.
-    </div>
-  </details>
-</div>
-
-<!-- 마케팅 및 후원 안내 수신 동의 (선택) -->
-<div class="field">
-  <div class="check-row">
-    <input type="checkbox" id="marketingCheck">
-    <label for="marketingCheck" class="txt" style="margin:0;font-weight:500;">
-      [선택] 선교·후원 소식 및 안내 수신에 동의합니다
-    </label>
-  </div>
-  <details class="consent">
-    <summary>동의 내용 자세히 보기</summary>
-    <div class="box">
-      · <strong>수집·이용 목적:</strong> 캄보디아 선교 현장 소식, 후원 안내 및 캠페인 전달 (SMS/알림톡/메일)<br>
-      · <strong>수집 항목:</strong> 이름, 연락처<br>
-      · <strong>보유 및 이용 기간:</strong> 동의 철회 시 또는 서비스 종료 시까지<br>
-      · <strong>동의 거부 권리:</strong> 동의하지 않으셔도 1분 기도 릴레이 참여에 제한이 없습니다.
-    </div>
-  </details>
-</div>
-
-        <button type="submit" class="submit" id="submitBtn">기도와 응원 전하기</button>
-        <div class="error-msg" id="errorMsg">필수 항목을 모두 확인해 주세요.</div>
-        <div class="loading-note" id="loadingNote"></div>
-      </form>
-    </div>
-
-    <div class="card thanks" id="thanksCard">
-      <div class="mark">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#0E3B3D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <!-- 후원 분야 안내 카두 -->
+  <div class="support-section">
+    <div class="support-title">여러분의 마음은 이렇게 전달됩니다</div>
+    <div class="support-grid">
+      <div class="support-card">
+        <div class="support-icon">🏥</div>
+        <h4>치료 지원</h4>
+        <p>가난한 환우들을 위한 필수 의약품, 수술 및 긴급 의료비 지원</p>
       </div>
-      <h2 id="thanksName">마음이 전해졌습니다</h2>
-      <p>보내주신 기도와 응원은 정리되어<br>캄보디아 헤브론의료원(HMC)에 전달될 예정입니다.</p>
-<!--
-      <div class="feed">
-        <div class="feed-title">함께하는 릴레이</div>
-        <div id="feedList"></div>
+      <div class="support-card">
+        <div class="support-icon">🎓</div>
+        <h4>인재 양성</h4>
+        <p>현지 의료진 및 보건 인재 교육으로 자립할 수 있는 의료 환경 구축</p>
       </div>
     </div>
--->
   </div>
 
-  <footer>
-    위드헤브론(With Hebron)<br>
-    입력하신 정보는 소식 안내 목적 외에는 사용되지 않습니다.
-  </footer>
+  <!-- 신청 폼 -->
+  <form id="prayForm">
+    <!-- 1. 필수 기도 동의 -->
+    <div class="field">
+      <div class="check-row">
+        <input type="checkbox" id="prayCheck" required>
+        <label for="prayCheck" class="txt" style="margin:0;font-weight:500;cursor:pointer;">
+          캄보디아 환우와 의료진을 위해 1분간 기도로 함께합니다
+        </label>
+      </div>
+    </div>
+
+    <!-- 2. 후원 분야 선택 -->
+    <div class="field">
+      <label class="label">함께 마음을 모을 후원 분야</label>
+      <div class="support-options">
+        <label class="support-option">
+          <input type="radio" name="supportType" value="치료지원" checked>
+          <span>🏥 치료 지원</span>
+        </label>
+        <label class="support-option">
+          <input type="radio" name="supportType" value="인재양성">
+          <span>🎓 인재 양성</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- 3. 응원 메시지 -->
+    <div class="field">
+      <label for="message" class="label">응원 메시지</label>
+      <textarea id="message" class="textarea" placeholder="환우들과 의료진을 향한 따뜻한 응원의 한 줄을 남겨주세요." required></textarea>
+    </div>
+
+    <!-- 4. 이름 -->
+    <div class="field">
+      <label for="name" class="label">이름</label>
+      <input type="text" id="name" class="input" placeholder="이름을 입력하세요" required>
+    </div>
+
+    <!-- 5. 연락처 -->
+    <div class="field">
+      <label for="contact" class="label">연락처</label>
+      <input type="tel" id="contact" class="input" placeholder="010-0000-0000" required>
+    </div>
+
+    <!-- 6. 개인정보 수집·이용 동의 (필수) -->
+    <div class="field">
+      <div class="check-row">
+        <input type="checkbox" id="consentCheck" required>
+        <label for="consentCheck" class="txt" style="margin:0;font-weight:500;cursor:pointer;">
+          [필수] 개인정보 수집·이용에 동의합니다
+        </label>
+      </div>
+      <details class="consent">
+        <summary>동의 내용 자세히 보기</summary>
+        <div class="box">
+          · <strong>수집·이용 목적:</strong> 기도 릴레이 참여 접수 및 응원 메시지 게시<br>
+          · <strong>수집 항목:</strong> 이름, 연락처, 응원 메시지<br>
+          · <strong>보유 및 이용 기간:</strong> 목적 달성 후 지체 없이 파기<br>
+          · <strong>동의 거부 권리:</strong> 동의를 거부할 수 있으나, 미동의 시 릴레이 참여가 제한됩니다.
+        </div>
+      </details>
+    </div>
+
+    <!-- 7. 마케팅 및 후원 안내 수신 동의 (선택) -->
+    <div class="field">
+      <div class="check-row">
+        <input type="checkbox" id="marketingCheck">
+        <label for="marketingCheck" class="txt" style="margin:0;font-weight:500;cursor:pointer;">
+          [선택] 선교·후원 소식 및 안내 수신에 동의합니다
+        </label>
+      </div>
+      <details class="consent">
+        <summary>동의 내용 자세히 보기</summary>
+        <div class="box">
+          · <strong>수집·이용 목적:</strong> 캄보디아 선교 현장 소식, 후원 안내 및 캠페인 전달 (SMS/알림톡/메일)<br>
+          · <strong>수집 항목:</strong> 이름, 연락처<br>
+          · <strong>보유 및 이용 기간:</strong> 동의 철회 시 또는 서비스 종료 시까지<br>
+          · <strong>동의 거부 권리:</strong> 동의하지 않으셔도 1분 기도 릴레이 참여에 제한이 없습니다.
+        </div>
+      </details>
+    </div>
+
+    <button type="submit" id="submitBtn" class="submit-btn">기도 릴레이 참여하기 🕯️</button>
+    <div id="errorMsg" class="error-msg">모든 필수 항목을 입력하고 동의해 주세요.</div>
+    <div id="loadingNote" class="loading-note"></div>
+  </form>
+
+  <!-- 최근 참여 피드 -->
+  <div class="feed-section">
+    <div class="feed-title">최근 함께해 주신 마음들</div>
+    <div id="feedList">
+      <div style="font-size:12px; color:#888;">목록을 불러오는 중입니다…</div>
+    </div>
+  </div>
 </div>
 
-<!-- Firebase SDK 연동 -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { 
+    getFirestore, 
+    collection, 
+    addDoc, 
+    getDocs, 
+    query, 
+    orderBy, 
+    serverTimestamp 
+  } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-  // 보내주신 이미지 속 진짜 Key 정보 적용 완료!
   const firebaseConfig = {
     apiKey: "AIzaSyCBu_rDPo5M-loPv8UBnvh96JAKi1swbOU",
     authDomain: "ambodia-prayer.firebaseapp.com",
@@ -363,88 +340,49 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  const CANDLE_COUNT = 12;
-  const relayRow = document.getElementById('relayRow');
   const counterText = document.getElementById('counterText');
-  const form = document.getElementById('prayerForm');
+  const feedList = document.getElementById('feedList');
+  const form = document.getElementById('prayForm');
+  const submitBtn = document.getElementById('submitBtn');
   const errorMsg = document.getElementById('errorMsg');
   const loadingNote = document.getElementById('loadingNote');
-  const submitBtn = document.getElementById('submitBtn');
-  const formCard = document.getElementById('formCard');
-  const thanksCard = document.getElementById('thanksCard');
-  const thanksName = document.getElementById('thanksName');
-  const feedList = document.getElementById('feedList');
 
-  // 촛불 생성
-  for(let i=0; i<CANDLE_COUNT; i++){
-    const c = document.createElement('div');
-    c.className = 'candle';
-    c.innerHTML = '<div class="flame"></div><div class="stick"></div>';
-    relayRow.appendChild(c);
-  }
-
-  function lightCandles(count){
-    const candles = relayRow.querySelectorAll('.candle');
-    const litCount = Math.min(count, CANDLE_COUNT);
-    candles.forEach((c,i)=>{
-      if(i < litCount){ c.classList.add('lit'); } else { c.classList.remove('lit'); }
-    });
-  }
-
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
-
-  function maskName(name){
-    if(name.length <= 1) return name + '님';
-    return name[0] + '*'.repeat(name.length-1) + '님';
-  }
-
-  // 데이터 불러오기 (참여자 수 & 최신 메시지)
+  // 데이터 불러오기 (참여자 수 & 최근 메시지)
   async function loadRelayData(){
     try {
       const q = query(collection(db, "prayers"), orderBy("createdAt", "desc"));
       const querySnapshot = await getDocs(q);
-      
-      const totalCount = querySnapshot.size;
-      //counterText.textContent = '지금까지 ' + totalCount.toLocaleString('ko-KR') + '명이 함께했습니다';
-      counterText.textContent = '촛불을 밝혀 주셔 감사합니다.';
-      lightCandles(totalCount);
 
-      const feedItems = [];
-      querySnapshot.docs.slice(0, 5).forEach(doc => {
-        const data = doc.data();
-        feedItems.push({
-          who: maskName(data.name || '무명'),
-          msg: data.message
-        });
+      const totalCount = querySnapshot.size;
+      
+      // 참여 문구 변경
+      counterText.textContent = '촛불을 밝혀 주셔 감사합니다.';
+
+      feedList.innerHTML = '';
+      if(querySnapshot.empty) {
+        feedList.innerHTML = '<div style="font-size:12px; color:#888;">첫 번째 촛불의 주인공이 되어주세요!</div>';
+        return;
+      }
+
+      let count = 0;
+      querySnapshot.forEach(docSnap => {
+        if(count >= 5) return; // 최근 5건만 표시
+        const data = docSnap.data();
+        
+        const item = document.createElement('div');
+        item.className = 'feed-item';
+        item.innerHTML = `<span class="who">${escapeHtml(maskName(data.name || '무명'))}님</span> ${escapeHtml(data.message || '')}`;
+        feedList.appendChild(item);
+        count++;
       });
 
-      renderFeed(feedItems);
-    } catch(e) {
-      console.error(e);
-      counterText.textContent = '지금까지 함께한 마음이 모이고 있습니다';
-      lightCandles(0);
+    } catch(err) {
+      console.error(err);
+      counterText.textContent = '촛불을 밝혀 주셔 감사합니다.';
     }
   }
 
-  function renderFeed(arr){
-    feedList.innerHTML = '';
-    if(!arr.length){
-      feedList.innerHTML = '<div class="feed-item">가장 먼저 마음을 남겨보세요.</div>';
-      return;
-    }
-    arr.forEach(item=>{
-      const div = document.createElement('div');
-      div.className = 'feed-item';
-      div.innerHTML = '<span class="who">' + escapeHtml(item.who) + '</span>' + escapeHtml(item.msg);
-      feedList.appendChild(div);
-    });
-  }
-
-  loadRelayData();
-
-  // 폼 제출 핸들러
+  // 폼 제출 이벤트 핸들러
   form.addEventListener('submit', async function(e){
     e.preventDefault();
     errorMsg.style.display = 'none';
@@ -454,9 +392,11 @@
     const name = document.getElementById('name').value.trim();
     const contact = document.getElementById('contact').value.trim();
     const consent = document.getElementById('consentCheck').checked;
-
-    // 👈 1. 화면에서 마케팅 체크박스에 체크했는지 여부(true/false)를 가져오는 줄 추가
+    
+    // 마케팅 동의 및 후원 분야 선택값 가져오기
     const marketingConsent = document.getElementById('marketingCheck').checked;
+    const supportTypeNode = document.querySelector('input[name="supportType"]:checked');
+    const supportType = supportTypeNode ? supportTypeNode.value : '치료지원';
 
     if(!prayed || !message || !name || !contact || !consent){
       errorMsg.style.display = 'block';
@@ -467,33 +407,49 @@
     loadingNote.textContent = '전송 중입니다…';
 
     try {
-      // DB에 응원글 저장
+      // Firebase DB에 동의 정보 및 선택 분야 포함하여 저장
       await addDoc(collection(db, "prayers"), {
         name: name,
         contact: contact,
         message: message,
+        supportType: supportType,
         prayed: true,
         consent: true,
-        // 👈 2. 가져온 마케팅 동의 여부를 Firebase DB에 같이 저장하는 줄 추가
-        marketingConsent: marketingConsent, 
+        marketingConsent: marketingConsent,
         createdAt: serverTimestamp()
       });
 
-      thanksName.textContent = name + '님의 마음이 전해졌습니다';
-      formCard.style.display = 'none';
-      thanksCard.style.display = 'block';
-      window.scrollTo({top:0, behavior:'smooth'});
-
-      await loadRelayData();
+      alert('함께 마음을 모아주셔서 감사합니다! 촛불이 전달되었습니다.');
+      form.reset();
+      loadingNote.textContent = '';
+      submitBtn.disabled = false;
+      
+      // 최신 목록 다시 로드
+      loadRelayData();
 
     } catch(err) {
       console.error(err);
+      alert('전송에 실패했습니다. 다시 시도해 주세요.');
       loadingNote.textContent = '';
-      errorMsg.textContent = '저장 중 문제가 발생했습니다. 다시 시도해 주세요.';
-      errorMsg.style.display = 'block';
       submitBtn.disabled = false;
     }
   });
+
+  // 보안/XSS 방지용 태그 변환 함수
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  // 이름 마스킹 함수 (홍길동 -> 홍**님)
+  function maskName(name) {
+    if (!name) return '무명';
+    if (name.length <= 1) return name;
+    if (name.length === 2) return name[0] + '*';
+    return name[0] + '*'.repeat(name.length - 1);
+  }
+
+  // 최초 데이터 로드 Execution
+  loadRelayData();
 </script>
 
 </body>

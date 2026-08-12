@@ -207,10 +207,20 @@
     </div>
 
     <!-- 2. 응원 메시지 -->
+  <!-- 기존코드
     <div class="field">
       <label for="message" class="label">응원 메시지</label>
-      <textarea id="message" class="textarea" placeholder="환우들과 의료진을 향한 따뜻한 응원의 한 줄을 남겨주세요." required></textarea>
-    </div>
+     <textarea id="message" class="textarea" placeholder="환우들과 의료진을 향한 따뜻한 응원의 한 줄을 남겨주세요." required></textarea>
+    </div> -->
+
+<!-- 수정 코드 (maxlength 속성 및 안내 문구 추가) -->
+<div class="field">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+    <label for="message" class="label" style="margin-bottom:0;">응원 메시지</label>
+    <span id="charCount" style="font-size:12px; color:#888;">0 / 200자</span>
+  </div>
+  <textarea id="message" class="textarea" maxlength="200" placeholder="환우들과 의료진을 향한 따뜻한 응원의 한 줄을 남겨주세요. (최대 200자)" required></textarea>
+</div>
 
     <!-- 3. 이름 -->
     <div class="field">
@@ -297,6 +307,13 @@
   const submitBtn = document.getElementById('submitBtn');
   const errorMsg = document.getElementById('errorMsg');
   const loadingNote = document.getElementById('loadingNote');
+
+  const messageInput = document.getElementById('message');
+const charCount = document.getElementById('charCount');
+
+messageInput.addEventListener('input', function() {
+  charCount.textContent = `${this.value.length} / 200자`;
+});
 
   // 데이터 불러오기 (안내 문구 세팅)
   async function loadRelayData(){

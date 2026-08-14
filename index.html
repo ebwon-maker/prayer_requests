@@ -227,6 +227,28 @@
   .error-msg { color: var(--danger); font-size: 13px; margin-top: 8px; text-align: center; display: none; }
   .loading-note { color: var(--teal-light); font-size: 13px; margin-top: 8px; text-align: center; }
 
+  /* ---------- FOOTER SECTION ---------- */
+  .footer {
+    background-color: #f4f5f7;
+    border-top: 1px solid var(--border);
+    padding: 24px 20px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-sub);
+    line-height: 1.6;
+  }
+  .footer p {
+    margin: 0 0 4px 0;
+  }
+  .footer p:last-child {
+    margin-bottom: 0;
+    color: #999999;
+    margin-top: 8px;
+  }
+  .footer strong {
+    color: var(--teal-deep);
+  }
+
   @media (max-width: 400px) {
     .support-grid { grid-template-columns: 1fr; }
   }
@@ -277,7 +299,7 @@
         </div>
       </div>
 
-      <!-- 2. 응원 메시지 (maxlength 및 실시간 글자수 추가) -->
+      <!-- 2. 응원 메시지 -->
       <div class="field">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
           <label for="message" class="label" style="margin-bottom:0;">응원 메시지</label>
@@ -340,6 +362,14 @@
       <div id="errorMsg" class="error-msg">모든 필수 항목을 입력하고 동의해 주세요.</div>
       <div id="loadingNote" class="loading-note"></div>
     </form>
+  </div>
+
+  <!-- 푸터 영역 -->
+  <div class="footer">
+    <p><strong>사단법인 위드헤브론</strong></p>
+    <p>대표전화 : 02-2273-3395 | 이메일 : admin@withhebron.com</p>
+    <p>서울특별시 마포구 독막로 331 마스터즈타워 2006호</p>
+    <p>© 2026 With Hebron. All rights reserved.</p>
   </div>
 </div>
 

@@ -16,12 +16,15 @@
   }
 
   * { box-sizing: border-box; }
+  
+  /* 비밀번호 인증 전까지 전체 화면 숨김 */
   body {
     font-family: 'Noto Sans KR', sans-serif;
     background-color: #f8f9fa;
     color: #333;
     margin: 0;
     padding: 20px;
+    display: none; 
   }
 
   .admin-container {
@@ -96,6 +99,20 @@
 </head>
 <body>
 
+<script>
+  // 🔒 관리자 페이지 비밀번호 설정
+  const ADMIN_PASSWORD = "Farah2015*"; 
+
+  const inputPw = prompt("관리자 비밀번호를 입력하세요:");
+  if (inputPw === ADMIN_PASSWORD) {
+    // 비밀번호가 맞으면 페이지 표시
+    document.body.style.display = "block";
+  } else {
+    alert("비밀번호가 올바르지 않습니다.");
+    window.location.href = "index.html"; // 틀리면 메인 페이지로 이동
+  }
+</script>
+
 <div class="admin-container">
   <div class="header-row">
     <div>
@@ -138,7 +155,7 @@
 
   let fetchedData = [];
 
-  // 데이터 불러오기 (조건문 없이 무조건 전체 수집)
+  // 데이터 불러오기
   async function loadData() {
     const tableWrapper = document.getElementById('tableWrapper');
     const statsText = document.getElementById('statsText');
@@ -151,7 +168,7 @@
         fetchedData.push({ id: documentSnap.id, ...documentSnap.data() });
       });
 
-      // 최신순 정렬 (생성일시 없으면 뒤로)
+      // 최신순 정렬
       fetchedData.sort((a, b) => {
         const tA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 0;
         const tB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 0;

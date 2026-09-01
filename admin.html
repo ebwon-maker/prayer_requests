@@ -3,76 +3,164 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>기도 릴레이 - 관리자 페이지</title>
+<title>캄보디아 기도 릴레이 - 관리자 페이지</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root { --teal: #0E3B3D; --gold: #D9A441; --bg: #F8F9FA; --border: #E2E8F0; --danger: #B4483C; }
-  body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bg); color: #333; margin: 0; padding: 20px; }
-  .container { max-width: 1200px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-  #loginBox { max-width: 360px; margin: 80px auto; text-align: center; }
-  #loginBox input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; box-sizing: border-box; }
-  #loginBox button { width: 100%; padding: 12px; background: var(--teal); color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
-  #adminContent { display: none; }
-  .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); padding-bottom: 16px; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
-  .header h1 { font-size: 22px; color: var(--teal); margin: 0; }
-  .badge { background: var(--teal); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 14px; }
-  .header-btns { display: flex; gap: 8px; }
-  .btn-excel { background: #107C41; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; }
-  .btn-danger { background: var(--danger); color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; }
-  .btn-delete { background: #fff; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; border-radius: 4px; font-size: 13px; font-weight: bold; cursor: pointer; }
-  .btn-delete:hover { background: var(--danger); color: #fff; }
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; text-align: left; font-size: 15px; }
-  th, td { padding: 12px 14px; border-bottom: 1px solid var(--border); }
-  th { background: #F1F5F9; color: #475569; font-weight: 700; white-space: nowrap; }
-  tr:hover { background: #F8FAFC; }
-  .msg-col { max-width: 240px; word-break: break-all; }
-  .tag { padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; display: inline-block; text-align: center; }
-  .tag-yes { background: #E6F4EA; color: #137333; }
-  .tag-no { background: #FCE8E6; color: #C5221F; }
+  :root {
+    --teal-deep: #0E3B3D;
+    --teal-light: #1A5255;
+    --border: #E2E8F0;
+    --bg-sand: #F4EFDF;
+    --danger: #B4483C;
+    --success: #2E7D32;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+  }
+
+  .admin-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 28px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  h1 {
+    font-size: 22px;
+    color: var(--teal-deep);
+    margin: 0;
+  }
+
+  .stats {
+    font-size: 14px;
+    color: #666;
+  }
+
+  .stats strong {
+    color: var(--teal-deep);
+  }
+
+  .action-btns {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-excel {
+    background: #107C41;
+    color: #fff;
+  }
+  .btn-excel:hover { background: #0B5C30; }
+
+  .btn-delete-all {
+    background: var(--danger);
+    color: #fff;
+  }
+  .btn-delete-all:hover { background: #8E362C; }
+
+  .btn-sm-del {
+    background: #fff;
+    border: 1px solid var(--danger);
+    color: var(--danger);
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+  }
+  .btn-sm-del:hover {
+    background: var(--danger);
+    color: #fff;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 13px;
+  }
+
+  th, td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  th {
+    background: #f1f5f9;
+    color: var(--teal-deep);
+    font-weight: 700;
+  }
+
+  tr:hover {
+    background: #f8fafc;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .badge-yes { background: #E8F5E9; color: var(--success); }
+  .badge-no { background: #FFEBEE; color: var(--danger); }
+
+  .msg-cell {
+    max-width: 250px;
+    word-break: break-all;
+  }
+
+  .loading {
+    text-align: center;
+    padding: 40px;
+    color: #888;
+  }
 </style>
 </head>
 <body>
 
-<div class="container">
-  <div id="loginBox">
-    <h2 style="color:var(--teal)">관리자 로그인</h2>
-    <input type="password" id="adminPw" placeholder="비밀번호를 입력하세요">
-    <button onclick="checkAuth()">접속하기</button>
-    <p id="loginErr" style="color:red; display:none; margin-top:10px; font-size:14px;">비밀번호가 올바르지 않습니다.</p>
+<div class="admin-container">
+  <div class="header-row">
+    <div>
+      <h1>캄보디아 기도 릴레이 신청 현황</h1>
+      <div class="stats" id="statsText">데이터를 불러오는 중…</div>
+    </div>
+    <div class="action-btns">
+      <button class="btn btn-excel" id="excelBtn">📊 엑셀 다운로드</button>
+      <button class="btn btn-delete-all" id="deleteAllBtn">🚨 전체 데이터 일괄 파기</button>
+    </div>
   </div>
 
-  <div id="adminContent">
-    <div class="header">
-      <div>
-        <h1>캄보디아 기도 릴레이 신청 현황</h1>
-        <p style="margin:5px 0 0; color:#64748B; font-size:14px;">총 <span id="totalCount" class="badge">0</span>건의 참여가 있습니다.</p>
-      </div>
-      <div class="header-btns">
-        <button class="btn-excel" onclick="downloadCSV()">📊 엑셀 다운로드</button>
-        <button class="btn-danger" onclick="deleteAllData()">🚨 전체 데이터 일괄 파기</button>
-      </div>
-    </div>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>이름</th>
-            <th>연락처</th>
-            <th>응원 메시지</th>
-            <th>[필수] 개인정보 동의</th>
-            <th>[선택] 마케팅/후원 동의</th>
-            <th>신청 일시</th>
-            <th>관리</th>
-          </tr>
-        </thead>
-        <tbody id="dataTable">
-          <tr><td colspan="8" style="text-align:center; padding:30px;">데이터를 불러오는 중입니다…</td></tr>
-        </tbody>
-      </table>
-    </div>
+  <div id="tableWrapper">
+    <div class="loading">신청 내역을 불러오고 있습니다...</div>
   </div>
 </div>
 
@@ -83,16 +171,17 @@
     collection, 
     getDocs, 
     query, 
-    orderBy, 
-    doc, 
-    deleteDoc, 
-    writeBatch 
+    orderBy 
   } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  // 관리자 비밀번호 (Firestore Rules의 adminKey 조건과 일치해야 함)
+  const ADMIN_KEY = "hebron2026!";
+  const PROJECT_ID = "ambodia-prayer";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCBu_rDPo5M-loPv8UBnvh96JAKi1swbOU",
     authDomain: "ambodia-prayer.firebaseapp.com",
-    projectId: "ambodia-prayer",
+    projectId: PROJECT_ID,
     storageBucket: "ambodia-prayer.firebasestorage.app",
     messagingSenderId: "463714476310",
     appId: "1:463714476310:web:612f503e5587b1a1ddf037",
@@ -102,157 +191,187 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // 🔑 관리자 비밀번호
-  const ADMIN_PASSWORD = "Farah*"; 
+  let fetchedData = [];
 
-  let rawDataList = [];
+  // 1. 데이터 목록 불러오기
+  async function loadData() {
+    const tableWrapper = document.getElementById('tableWrapper');
+    const statsText = document.getElementById('statsText');
 
-  window.checkAuth = function() {
-    const inputPw = document.getElementById('adminPw').value;
-    if(inputPw === ADMIN_PASSWORD) {
-      document.getElementById('loginBox').style.display = 'none';
-      document.getElementById('adminContent').style.display = 'block';
-      loadAdminData();
-    } else {
-      document.getElementById('loginErr').style.display = 'block';
-    }
-  };
-
-  async function loadAdminData() {
     try {
       const q = query(collection(db, "prayers"), orderBy("createdAt", "desc"));
       const querySnapshot = await getDocs(q);
       
-      const tbody = document.getElementById('dataTable');
-      tbody.innerHTML = '';
-      rawDataList = [];
+      fetchedData = [];
+      querySnapshot.forEach((doc) => {
+        fetchedData.push({ id: doc.id, ...doc.data() });
+      });
 
-      document.getElementById('totalCount').textContent = querySnapshot.size;
+      statsText.innerHTML = `총 <strong>${fetchedData.length}</strong>건의 참여가 있습니다.`;
 
-      if(querySnapshot.empty) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:30px;">아직 접수된 데이터가 없습니다.</td></tr>';
+      if (fetchedData.length === 0) {
+        tableWrapper.innerHTML = '<div class="loading">접수된 기도 릴레이 내역이 없습니다.</div>';
         return;
       }
 
-      let index = querySnapshot.size;
-      querySnapshot.forEach((docSnap) => {
-        const data = docSnap.data();
-        const docId = docSnap.id;
-        const dateStr = data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleString('ko-KR') : '-';
-        
-        // 필수 동의 여부 (기본값 true)
-        const consentBool = data.consent !== undefined ? data.consent : true;
-        const consentText = consentBool ? '동의' : '미동의';
+      let html = `
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>이름</th>
+              <th>연락처</th>
+              <th>응원 메시지</th>
+              <th>개인정보동의</th>
+              <th>마케팅동의</th>
+              <th>신청 일시</th>
+              <th>관리</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
 
-        // 선택 동의 여부
-        const mktBool = !!data.marketingConsent;
-        const mktText = mktBool ? '동의' : '미동의';
+      fetchedData.forEach((item, index) => {
+        const dateStr = item.createdAt?.toDate 
+          ? item.createdAt.toDate().toLocaleString('ko-KR') 
+          : '-';
 
-        rawDataList.push({
-          index: index,
-          name: data.name || '',
-          contact: data.contact || '',
-          message: data.message || '',
-          consent: consentText,
-          mkt: mktText,
-          date: dateStr
-        });
-
-        const safeName = escapeHtml(data.name || '무명');
-
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${index}</td>
-          <td><b>${safeName}</b></td>
-          <td>${escapeHtml(data.contact || '')}</td>
-          <td class="msg-col">${escapeHtml(data.message || '')}</td>
-          <td><span class="tag ${consentBool ? 'tag-yes' : 'tag-no'}">${consentText}</span></td>
-          <td><span class="tag ${mktBool ? 'tag-yes' : 'tag-no'}">${mktText}</span></td>
-          <td style="color:#64748B; font-size:13.5px;">${dateStr}</td>
-          <td>
-            <button class="btn-delete" onclick="deletePrayer('${docId}', '${safeName}')">삭제</button>
-          </td>
+        html += `
+          <tr>
+            <td>${fetchedData.length - index}</td>
+            <td><strong>${escapeHtml(item.name || '')}</strong></td>
+            <td>${escapeHtml(item.contact || '')}</td>
+            <td class="msg-cell">${escapeHtml(item.message || '')}</td>
+            <td><span class="badge ${item.consent ? 'badge-yes' : 'badge-no'}">${item.consent ? '동의' : '미동의'}</span></td>
+            <td><span class="badge ${item.marketingConsent ? 'badge-yes' : 'badge-no'}">${item.marketingConsent ? '동의' : '미동의'}</span></td>
+            <td>${dateStr}</td>
+            <td><button class="btn-sm-del" data-id="${item.id}">삭제</button></td>
+          </tr>
         `;
-        tbody.appendChild(tr);
-        index--;
       });
 
-    } catch(err) {
+      html += `</tbody></table>`;
+      tableWrapper.innerHTML = html;
+
+      // 삭제 버튼 이벤트 바인딩
+      document.querySelectorAll('.btn-sm-del').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = e.target.getAttribute('data-id');
+          deleteSingleDoc(id);
+        });
+      });
+
+    } catch (err) {
       console.error(err);
-      alert('데이터를 불러오는데 실패했습니다.');
+      tableWrapper.innerHTML = '<div class="loading" style="color:var(--danger)">데이터를 불러오는 중 오류가 발생했습니다.</div>';
     }
   }
 
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  // HTML 이스케이프 함수
+  function escapeHtml(text) {
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
-  // 1. 개별 데이터 삭제
-  window.deletePrayer = async function(docId, name) {
-    if(!confirm(`'${name}' 님의 참여 데이터를 삭제하시겠습니까?`)) return;
+  // 2. 단건 삭제 함수 (REST API + Admin Key 헤더 전송)
+  async function deleteSingleDoc(docId) {
+    if (!confirm("정말 이 기도 신청 건을 삭제하시겠습니까?")) return;
 
     try {
-      await deleteDoc(doc(db, "prayers", docId));
-      alert("삭제되었습니다.");
-      loadAdminData();
-    } catch(err) {
-      console.error(err);
-      alert("삭제 작업 중 오류가 발생했습니다.");
-    }
-  };
+      const response = await fetch(
+        `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/prayers/${docId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "adminKey": ADMIN_KEY
+          }
+        }
+      );
 
-  // 2. 전체 데이터 일괄 파기
-  window.deleteAllData = async function() {
-    const confirmText = prompt(
-      "⚠️ 모든 개인정보 및 응원 메시지가 데이터베이스에서 영구적으로 삭제됩니다.\n파기하시려면 아래에 [전체파기] 라고 입력해 주세요."
-    );
-
-    if (confirmText !== "전체파기") {
-      alert("입력값이 일치하지 않아 파기가 취소되었습니다.");
-      return;
-    }
-
-    try {
-      const querySnapshot = await getDocs(collection(db, "prayers"));
-      if (querySnapshot.empty) {
-        alert("파기할 데이터가 없습니다.");
-        return;
+      if (response.ok) {
+        alert("성공적으로 삭제되었습니다.");
+        loadData();
+      } else {
+        alert("삭제 권한이 없거나 오류가 발생했습니다.");
       }
-
-      const batch = writeBatch(db);
-      querySnapshot.forEach((docSnap) => {
-        batch.delete(docSnap.ref);
-      });
-
-      await batch.commit();
-      alert("법적 기준에 따라 모든 개인정보가 완전히 파기되었습니다.");
-      loadAdminData();
-    } catch(err) {
-      console.error(err);
-      alert("전체 파기 중 오류가 발생했습니다.");
+    } catch (error) {
+      console.error(error);
+      alert("삭제 작업 처리 중 오류가 발생했습니다.");
     }
-  };
+  }
 
-  // 3. 엑셀(CSV) 다운로드
-  window.downloadCSV = function() {
-    if(!rawDataList.length) {
-      alert('다운로드할 데이터가 없습니다.');
+  // 3. 전체 데이터 일괄 파기 함수
+  document.getElementById('deleteAllBtn').addEventListener('click', async () => {
+    if (fetchedData.length === 0) {
+      alert("파기할 데이터가 없습니다.");
       return;
     }
 
-    let csv = '\uFEFF번호,이름,연락처,응원메시지,개인정보수집동의(필수),마케팅후원안내동의(선택),신청일시\n';
-    rawDataList.forEach(row => {
-      const msg = `"${row.message.replace(/"/g, '""')}"`;
-      csv += `${row.index},"${row.name}","${row.contact}",${msg},"${row.consent}","${row.mkt}","${row.date}"\n`;
+    const confirmText = prompt("⚠️ 경고: 모든 신청 데이터가 영구 삭제됩니다.\n진행하시려면 '일괄파기' 라고 입력해주세요.");
+    if (confirmText !== '일괄파기') {
+      alert("취소되었습니다.");
+      return;
+    }
+
+    let successCount = 0;
+    for (const item of fetchedData) {
+      try {
+        const res = await fetch(
+          `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/prayers/${item.id}`,
+          {
+            method: "DELETE",
+            headers: { "adminKey": ADMIN_KEY }
+          }
+        );
+        if (res.ok) successCount++;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    alert(`총 ${successCount}건의 데이터가 일괄 파기되었습니다.`);
+    loadData();
+  });
+
+  // 4. 엑셀(CSV) 다운로드 함수
+  document.getElementById('excelBtn').addEventListener('click', () => {
+    if (fetchedData.length === 0) {
+      alert("다운로드할 데이터가 없습니다.");
+      return;
+    }
+
+    let csvContent = "\uFEFF이름,연락처,응원메시지,개인정보동의,마케팅동의,신청일시\n";
+
+    fetchedData.forEach(item => {
+      const dateStr = item.createdAt?.toDate 
+        ? item.createdAt.toDate().toLocaleString('ko-KR') 
+        : '-';
+
+      const name = `"${(item.name || '').replace(/"/g, '""')}"`;
+      const contact = `"${(item.contact || '').replace(/"/g, '""')}"`;
+      const msg = `"${(item.message || '').replace(/"/g, '""')}"`;
+      const consent = item.consent ? "동의" : "미동의";
+      const marketing = item.marketingConsent ? "동의" : "미동의";
+
+      csvContent += `${name},${contact},${msg},${consent},${marketing},"${dateStr}"\n`;
     });
 
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `기도릴레이_신청현황_${new Date().toISOString().slice(0,10)}.csv`;
-    a.click();
-  };
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `캄보디아_기도릴레이_신청현황_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+
+  // 최초 로드
+  loadData();
 </script>
 
 </body>

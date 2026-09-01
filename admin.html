@@ -193,18 +193,26 @@
 
   let fetchedData = [];
 
-  // 1. 데이터 목록 불러오기
+// 1. 데이터 목록 불러오기 (createdAt 필드가 없어도 모두 조회되도록 수정)
   async function loadData() {
     const tableWrapper = document.getElementById('tableWrapper');
     const statsText = document.getElementById('statsText');
 
     try {
-      const q = query(collection(db, "prayers"), orderBy("createdAt", "desc"));
+      // orderBy를 제거하여 모든 문서를 누락 없이 불러옵니다.
+      const q = query(collection(db, "prayers"));
       const querySnapshot = await getDocs(q);
       
       fetchedData = [];
       querySnapshot.forEach((doc) => {
         fetchedData.push({ id: doc.id, ...doc.data() });
+      });
+
+      // 자바스크립트 상에서 안전하게 최신순 정렬 (createdAt이 없으면 맨 뒤로 보내기)
+      fetchedData.sort((a, b) => {
+        const timeA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 0;
+        const timeB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 0;
+        return timeB - timeA;
       });
 
       statsText.innerHTML = `총 <strong>${fetchedData.length}</strong>건의 참여가 있습니다.`;
@@ -234,7 +242,7 @@
       fetchedData.forEach((item, index) => {
         const dateStr = item.createdAt?.toDate 
           ? item.createdAt.toDate().toLocaleString('ko-KR') 
-          : '-';
+          : '일시 미기록';
 
         html += `
           <tr>

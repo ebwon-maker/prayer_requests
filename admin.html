@@ -17,15 +17,20 @@
 
   * { box-sizing: border-box; }
   
+  /* 드래그 및 선택 방지 CSS */
   body {
     font-family: 'Noto Sans KR', sans-serif;
     background-color: #f8f9fa;
     color: #333;
     margin: 0;
     padding: 20px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 
-  /* 인라인 로그인 박스 스타일 */
+  /* 인라인 로그인 박스 */
   #loginContainer {
     max-width: 400px;
     margin: 80px auto;
@@ -169,6 +174,43 @@
   </div>
 </div>
 
+<!-- 🛡️ 우클릭, 드래그 및 개발자도구 단축키 차단 스크립트 -->
+<script>
+  // 1. 마우스 우클릭 방지
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  }, false);
+
+  // 2. 드래그 방지
+  document.addEventListener('dragstart', function(e) {
+    e.preventDefault();
+  }, false);
+
+  // 3. 보안 단축키 차단 (F12, Ctrl+Shift+I, Ctrl+U, Ctrl+S)
+  document.addEventListener('keydown', function(e) {
+    // F12 키 차단
+    if (e.keyCode === 123) {
+      e.preventDefault();
+      e.returnValue = false;
+    }
+    // Ctrl + Shift + I, Ctrl + Shift + J, Ctrl + Shift + C (개발자 도구)
+    if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+      e.preventDefault();
+      e.returnValue = false;
+    }
+    // Ctrl + U (소스 보기)
+    if (e.ctrlKey && e.keyCode === 85) {
+      e.preventDefault();
+      e.returnValue = false;
+    }
+    // Ctrl + S (페이지 저장)
+    if (e.ctrlKey && e.keyCode === 83) {
+      e.preventDefault();
+      e.returnValue = false;
+    }
+  }, false);
+</script>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { 
@@ -203,7 +245,7 @@
     if (inputPw === ADMIN_PASSWORD) {
       document.getElementById('loginContainer').style.display = 'none';
       document.getElementById('adminContent').style.display = 'block';
-      loadData(); // 인증 성공 후 데이터 로드
+      loadData();
     } else {
       loginErr.style.display = 'block';
     }

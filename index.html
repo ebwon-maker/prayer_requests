@@ -394,9 +394,9 @@
   const charCount = document.getElementById('charCount');
   const closedNotice = document.getElementById('closedNotice');
 
-  // ⏰ 한국 시간 기준 마감시각 검사 함수 (2026년 10월 21일 00:00:00 KST)
+  // ⏰ 한국 시간 기준 마감시각 검사 함수 (2026년 09월 21일 00:00:00 KST)
   function checkDeadline() {
-    const deadline = new Date("2026-10-21T00:00:00+09:00").getTime();
+    const deadline = new Date("2026-09-21T00:00:00+09:00").getTime();
     const now = Date.now();
 
     if (now >= deadline) {

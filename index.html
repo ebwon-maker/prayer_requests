@@ -130,33 +130,6 @@
     padding: 28px 20px 40px;
   }
 
-  /* 후원 분야 안내 섹션 */
-  .support-section {
-    margin-bottom: 24px;
-  }
-  .support-title {
-    font-size: 15px;
-    color: var(--teal-deep);
-    margin: 0 0 12px 0;
-    font-weight: 700;
-    text-align: center;
-  }
-  .support-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .support-card {
-    background: #FDFBF7;
-    border: 1px solid #EFE6D5;
-    border-radius: 10px;
-    padding: 14px 10px;
-    text-align: center;
-  }
-  .support-icon { font-size: 24px; margin-bottom: 4px; }
-  .support-card h4 { margin: 0 0 4px 0; font-size: 14px; color: var(--teal-deep); font-weight: 700; }
-  .support-card p { margin: 0; font-size: 12px; color: var(--text-sub); line-height: 1.4; word-break: keep-all; }
-
   /* 폼 요소 스타일 */
   .field { margin-bottom: 18px; }
   .label {
@@ -227,6 +200,34 @@
   .error-msg { color: var(--danger); font-size: 13px; margin-top: 8px; text-align: center; display: none; }
   .loading-note { color: var(--teal-light); font-size: 13px; margin-top: 8px; text-align: center; }
 
+  /* ---------- 마감 안내 메시지 상자 ---------- */
+  .closed-notice {
+    display: none; /* 기본은 숨김, 기간 경과 시 JS로 표시 */
+    background: #FDFBF7;
+    border: 1px solid #EFE6D5;
+    border-radius: 12px;
+    padding: 24px 18px;
+    text-align: center;
+  }
+  .closed-notice .icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
+  .closed-notice h3 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 18px;
+    color: var(--teal-deep);
+    margin: 0 0 10px;
+    word-break: keep-all;
+  }
+  .closed-notice p {
+    font-size: 14px;
+    color: var(--text-main);
+    line-height: 1.6;
+    margin: 0;
+    word-break: keep-all;
+  }
+
   /* ---------- FOOTER SECTION ---------- */
   .footer {
     background-color: #f4f5f7;
@@ -248,10 +249,6 @@
   .footer strong {
     color: var(--teal-deep);
   }
-
-  @media (max-width: 400px) {
-    .support-grid { grid-template-columns: 1fr; }
-  }
 </style>
 </head>
 <body>
@@ -270,21 +267,11 @@
   </div>
 
   <div class="content">
-    <!-- 후원 분야 안내 카드 -->
-    <div class="support-section">
-      <div class="support-title">여러분의 마음은 이렇게 전달됩니다</div>
-      <div class="support-grid">
-        <div class="support-card">
-          <div class="support-icon">🏥</div>
-          <h4>치료 지원</h4>
-          <p>체계적인 의료 지원으로 소외된 이웃이 필요한 치료를 받고, 더 건강한 삶을 살아가도록 곁에서 함께 돕습니다.</p>
-        </div>
-        <div class="support-card">
-          <div class="support-icon">🎓</div>
-          <h4>인재 양성</h4>
-          <p>현지 의료 인재를 함께 정성껏 키워내어, 지역사회가 스스로 건강을 지켜가는 지속 가능한 내일을 함께 만들어갑니다.</p>
-        </div>
-      </div>
+    <!-- 마감 후 표시할 안내 문구 상자 -->
+    <div id="closedNotice" class="closed-notice">
+      <div class="icon">🕯️</div>
+      <h3>마음 모아서 응원 &amp; 기도해주셔 감사합니다.</h3>
+      <p>온 마음 담아 남겨주신 응원과 기도는<br>캄보디아 헤브론의료원에 잘 전달하겠습니다.</p>
     </div>
 
     <!-- 신청 폼 -->
@@ -405,6 +392,20 @@
   const loadingNote = document.getElementById('loadingNote');
   const messageInput = document.getElementById('message');
   const charCount = document.getElementById('charCount');
+  const closedNotice = document.getElementById('closedNotice');
+
+  // ⏰ 한국 시간 기준 마감시각 검사 함수 (2026년 10월 21일 00:00:00 KST)
+  function checkDeadline() {
+    const deadline = new Date("2026-09-01T13:28:00+09:00").getTime();
+    const now = Date.now();
+
+    if (now >= deadline) {
+      form.style.display = 'none';
+      closedNotice.style.display = 'block';
+      return true;
+    }
+    return false;
+  }
 
   // 🕯️ 12개 양초 요소 동적 생성
   const CANDLE_COUNT = 12;
@@ -451,6 +452,12 @@
   // 폼 제출 이벤트 핸들러
   form.addEventListener('submit', async function(e){
     e.preventDefault();
+
+    if (checkDeadline()) {
+      alert("기도 릴레이 참여 기간이 마감되었습니다.");
+      return;
+    }
+
     errorMsg.style.display = 'none';
 
     const prayed = document.getElementById('prayCheck').checked;
@@ -485,7 +492,6 @@
       loadingNote.textContent = '';
       submitBtn.disabled = false;
 
-      // 작성 완료 후 최신 인원 및 촛불 업데이트
       loadRelayData();
 
     } catch(err) {
@@ -496,7 +502,7 @@
     }
   });
 
-  // 최초 데이터 로드
+  checkDeadline();
   loadRelayData();
 </script>
 

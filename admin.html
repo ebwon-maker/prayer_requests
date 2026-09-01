@@ -17,17 +17,59 @@
 
   * { box-sizing: border-box; }
   
-  /* 비밀번호 인증 전까지 전체 화면 숨김 */
   body {
     font-family: 'Noto Sans KR', sans-serif;
     background-color: #f8f9fa;
     color: #333;
     margin: 0;
     padding: 20px;
-    display: none; 
   }
 
+  /* 인라인 로그인 박스 스타일 */
+  #loginContainer {
+    max-width: 400px;
+    margin: 80px auto;
+    background: #ffffff;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    text-align: center;
+  }
+  #loginContainer h2 {
+    color: var(--teal-deep);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+  #loginContainer input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 15px;
+  }
+  #loginContainer button {
+    width: 100%;
+    padding: 12px;
+    background: var(--teal-deep);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  #loginErr {
+    color: var(--danger);
+    font-size: 13px;
+    margin-top: 10px;
+    display: none;
+  }
+
+  /* 인증 성공 전까지 숨김 */
   .admin-container {
+    display: none;
     max-width: 1100px;
     margin: 0 auto;
     background: #ffffff;
@@ -99,21 +141,18 @@
 </head>
 <body>
 
-<script>
-  // 🔒 관리자 페이지 비밀번호 설정
-  const ADMIN_PASSWORD = "Farah2015*"; 
+<!-- 1. 인라인 로그인 폼 -->
+<div id="loginContainer">
+  <h2>관리자 로그인</h2>
+  <form onsubmit="event.preventDefault(); checkAuth();">
+    <input type="password" id="adminPw" placeholder="비밀번호를 입력하세요" autocomplete="off">
+    <button type="submit">접속하기</button>
+  </form>
+  <div id="loginErr">비밀번호가 올바르지 않습니다.</div>
+</div>
 
-  const inputPw = prompt("관리자 비밀번호를 입력하세요:");
-  if (inputPw === ADMIN_PASSWORD) {
-    // 비밀번호가 맞으면 페이지 표시
-    document.body.style.display = "block";
-  } else {
-    alert("비밀번호가 올바르지 않습니다.");
-    window.location.href = "index.html"; // 틀리면 메인 페이지로 이동
-  }
-</script>
-
-<div class="admin-container">
+<!-- 2. 관리자 메인 화면 -->
+<div class="admin-container" id="adminContent">
   <div class="header-row">
     <div>
       <h1>캄보디아 기도 릴레이 신청 현황</h1>
@@ -153,7 +192,22 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
+  const ADMIN_PASSWORD = "Farah2015*"; 
   let fetchedData = [];
+
+  // 화면 인라인 로그인 검증 함수
+  window.checkAuth = function() {
+    const inputPw = document.getElementById('adminPw').value;
+    const loginErr = document.getElementById('loginErr');
+
+    if (inputPw === ADMIN_PASSWORD) {
+      document.getElementById('loginContainer').style.display = 'none';
+      document.getElementById('adminContent').style.display = 'block';
+      loadData(); // 인증 성공 후 데이터 로드
+    } else {
+      loginErr.style.display = 'block';
+    }
+  };
 
   // 데이터 불러오기
   async function loadData() {
@@ -282,8 +336,6 @@
     link.download = `기도릴레이_현황_${new Date().toISOString().slice(0,10)}.csv`;
     link.click();
   });
-
-  loadData();
 </script>
 </body>
 </html>

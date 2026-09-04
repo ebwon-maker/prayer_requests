@@ -41,6 +41,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
         }
 
         /* Header Area */
@@ -74,7 +75,7 @@
 
         /* Message Box Area */
         .message-box {
-            margin: 24px;
+            margin: 24px 24px 0 24px;
             padding: 22px;
             background-color: #FAF8F5;
             border: 1px solid var(--gold);
@@ -103,7 +104,7 @@
         /* Section Title */
         .section-title {
             text-align: center;
-            margin: 32px 0 16px 0;
+            margin: 36px 0 16px 0;
         }
 
         .section-title h2 {
@@ -152,6 +153,103 @@
             border-radius: 6px;
         }
 
+        /* Video Container Area (16:9 Aspect Ratio) */
+        .video-wrapper {
+            margin: 0 24px 24px 24px;
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Swipe Gallery Area */
+        .gallery-container {
+            position: relative;
+            margin: 0 24px 24px 24px;
+        }
+
+        .gallery-track {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 8px;
+        }
+
+        /* Scrollbar hiding for clean UI */
+        .gallery-track::-webkit-scrollbar {
+            display: none;
+        }
+        .gallery-track {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .gallery-item {
+            flex: 0 0 85%; /* 다음 카드가 살짝 보여 스와이프 유도 */
+            scroll-snap-align: center;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            aspect-ratio: 4 / 3;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(14, 59, 61, 0.85), transparent);
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 20px 12px 10px 12px;
+            text-align: center;
+        }
+
+        /* Swipe Dots Indicator */
+        .gallery-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: var(--teal-deep);
+            width: 20px;
+            border-radius: 10px;
+        }
+
         /* Banner CTA Area */
         .banner {
             margin: 24px;
@@ -172,7 +270,7 @@
         }
 
         .banner p {
-            margin: 0 0 20px 0; /* 간격을 띄우기 위해 margin-bottom을 확장했습니다 */
+            margin: 0 0 20px 0;
             font-size: 13.5px;
             color: #E2E8F0;
             word-break: keep-all;
@@ -213,25 +311,33 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <span class="badge">위드헤브론 감사 리포트</span>
             <h1>보내주신 마음이<br>캄보디아에 전달되었습니다! 💌</h1>
         </div>
 
-        <!-- Message Box -->
         <div class="message-box">
             <div class="greeting">안녕하세요 🏥</div>
             <p>남겨주신 따뜻한 기도와 응원이 캄보디아 현장의 환우와 의료진에게 전달되어 큰 위로와 소망이 되었습니다. 💖</p>
             <p>보내주신 사랑으로 다시 일어선 캄보디아 환아와 현지 의료진이 후원자님께 전해온 진심 어린 감사의 마음을 나눕니다.</p>
         </div>
 
-        <!-- Section Title -->
+        <div class="section-title">
+            <h2>🎬 현장 영상 보기</h2>
+        </div>
+        <div class="video-wrapper">
+            <iframe 
+                src="https://youtu.be/-JAbdhJUvGA" 
+                title="위드헤브론 감사 영상" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        </div>
+
         <div class="section-title">
             <h2>캄보디아 현장의 감사 소식 👇</h2>
         </div>
 
-        <!-- Story Cards -->
         <div class="story-card">
             <div class="story-title">💌 아픔 대신 피어난 아이의 미소</div>
             <p>(샘플문구)보내주신 기도 덕분에 이제 아프지 않고 친구들과 마음껏 달릴 수 있게 되었어요. 제게 소중한 내일을 선물해 주셔서 감사합니다!</p>
@@ -241,9 +347,39 @@
 
         <div class="story-card">
             <div class="story-title">🩺 사람을 살리는 꿈을 품은 청년</div>
-            <p>(샘플문구)후원자님의 사람 덕분에 이곳에서 사람을 살리는 꿈을 키워가고 있습니다. 캄보디아의 이웃들을 깊이 사랑하고 치료하는 신실한 의료진이 되겠습니다.</p>
+            <p>(샘플문구)후원자님의 사랑 덕분에 이곳에서 사람을 살리는 꿈을 키워가고 있습니다. 캄보디아의 이웃들을 깊이 사랑하고 치료하는 신실한 의료진이 되겠습니다.</p>
             <span class="story-tag">#의료진의다짐</span>
             <span class="story-tag">#따뜻한동역</span>
+        </div>
+
+        <div class="section-title">
+            <h2>📸 현장 화보 (좌우로 스와이프)</h2>
+        </div>
+        <div class="gallery-container">
+            <div class="gallery-track" id="galleryTrack">
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/500/375?random=1" alt="진료 사진">
+                    <div class="gallery-caption">따뜻한 진료 현장</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/500/375?random=2" alt="아이들의 미소">
+                    <div class="gallery-caption">환하게 웃는 환아</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/500/375?random=3" alt="의무실 모습">
+                    <div class="gallery-caption">의료진의 정성 어린 손길</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/500/375?random=4" alt="희망 전달">
+                    <div class="gallery-caption">전달된 응원의 메시지</div>
+                </div>
+            </div>
+            <div class="gallery-dots" id="galleryDots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
         </div>
 
         <div class="story-card">
@@ -252,14 +388,12 @@
             <span class="story-tag">#지속가능한동역</span>
         </div>
 
-        <!-- Banner & CTA Button -->
         <div class="banner">
             <h3>"후원자님의 기도, 사랑의 시작입니다"</h3>
             <p>더 많은 캄보디아 환우들에게 희망을 전해 주세요.</p>
             <a href="https://mrmweb.hsit.co.kr/v2/Member/MemberJoin.aspx?action=join&server=2WMQCcxHyID2uxRJtOoN5A==&supportgroup=2" class="btn-primary">위드헤브론의 동역자 되기 🙏</a>
         </div>
 
-        <!-- Footer -->
         <div class="footer">
             <p><strong>사단법인 위드헤브론</strong></p>
             <p>대표전화 : 02-2273-3395 ㅣ 이메일 : admin@withhebron.com</p>
@@ -267,5 +401,23 @@
             <p>© 2026 With Hebron. All rights reserved.</p>
         </div>
     </div>
+
+    <script>
+        const track = document.getElementById('galleryTrack');
+        const dots = document.querySelectorAll('.dot');
+
+        track.addEventListener('scroll', () => {
+            const itemWidth = track.firstElementChild.getBoundingClientRect().width + 12; // width + gap
+            const activeIndex = Math.round(track.scrollLeft / itemWidth);
+            
+            dots.forEach((dot, index) => {
+                if (index === activeIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

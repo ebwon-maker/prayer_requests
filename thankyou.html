@@ -153,11 +153,11 @@
             border-radius: 6px;
         }
 
-        /* Video Container Area (Responsive 16:9 Aspect Ratio) */
+        /* Video Container Area (16:9 Aspect Ratio) */
         .video-wrapper {
             margin: 0 24px 24px 24px;
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 ratio */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
             border-radius: 12px;
@@ -189,7 +189,6 @@
             padding-bottom: 8px;
         }
 
-        /* Scrollbar hiding for clean UI */
         .gallery-track::-webkit-scrollbar {
             display: none;
         }
@@ -206,6 +205,7 @@
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             aspect-ratio: 4 / 3;
+            background-color: #f0f0f0; /* 이미지 로딩 전 빈 공간 대체 */
         }
 
         .gallery-item img {
@@ -329,7 +329,6 @@
             <h2>🎬 현장 영상 보기</h2>
         </div>
         <div class="video-wrapper">
-            <!-- 전달해주신 유튜브 퍼가기 코드 반영 -->
             <iframe 
                 src="https://www.youtube.com/embed/-JAbdhJUvGA" 
                 title="YouTube video player" 
@@ -366,20 +365,21 @@
         </div>
         <div class="gallery-container">
             <div class="gallery-track" id="galleryTrack">
+                <!-- 이미지 파일명과 하단 설명을 상황에 맞게 변경해주세요 -->
                 <div class="gallery-item">
-                    <img src="https://picsum.photos/500/375?random=1" alt="진료 사진">
+                    <img src="photo1.jpg" alt="현장 사진 1">
                     <div class="gallery-caption">따뜻한 진료 현장</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://picsum.photos/500/375?random=2" alt="아이들의 미소">
+                    <img src="photo2.jpg" alt="현장 사진 2">
                     <div class="gallery-caption">환하게 웃는 환아</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://picsum.photos/500/375?random=3" alt="의무실 모습">
+                    <img src="photo3.jpg" alt="현장 사진 3">
                     <div class="gallery-caption">의료진의 정성 어린 손길</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://picsum.photos/500/375?random=4" alt="희망 전달">
+                    <img src="photo4.jpg" alt="현장 사진 4">
                     <div class="gallery-caption">전달된 응원의 메시지</div>
                 </div>
             </div>

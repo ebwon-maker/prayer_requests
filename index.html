@@ -21,7 +21,23 @@
     --danger: #B4483C;
   }
 
-  * { box-sizing: border-box; }
+  * { 
+    box-sizing: border-box; 
+    /* 텍스트 드래그(선택) 방지 CSS */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* 입력창과 텍스트 상자 내에서는 입력 및 선택이 가능하도록 예외 처리 */
+  input, textarea {
+    -webkit-user-select: auto !important;
+    -moz-user-select: auto !important;
+    -ms-user-select: auto !important;
+    user-select: auto !important;
+  }
+
   body {
     font-family: 'Noto Sans KR', sans-serif;
     background-color: var(--bg-sand);
@@ -359,6 +375,36 @@
     <p>© 2026 With Hebron. All rights reserved.</p>
   </div>
 </div>
+
+<script>
+  // 🚫 우클릭, 드래그, 단축키 방지 기능
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
+
+  document.addEventListener('dragstart', function(e) {
+    e.preventDefault();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    // F12 개발자 도구 방지
+    if (e.key === 'F12') {
+      e.preventDefault();
+    }
+    // Ctrl+U / Cmd+U (소스 보기 방지)
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'u') {
+      e.preventDefault();
+    }
+    // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C (개발자 도구 방지)
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'j', 'c'].includes(e.key.toLowerCase())) {
+      e.preventDefault();
+    }
+    // Ctrl+S / Cmd+S (페이지 저장 방지)
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+      e.preventDefault();
+    }
+  });
+</script>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";

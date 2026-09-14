@@ -21,8 +21,15 @@
             --danger: #B4483C;
         }
 
-        * { box-sizing: border-box; }
-        
+        * { 
+            box-sizing: border-box; 
+            /* 텍스트 드래그 방지 CSS 추가 */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
         body {
             font-family: 'Noto Sans KR', sans-serif;
             background-color: var(--bg-sand);
@@ -205,7 +212,7 @@
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             aspect-ratio: 4 / 3;
-            background-color: #f0f0f0; /* 이미지 로딩 전 빈 공간 대체 */
+            background-color: #f0f0f0;
         }
 
         .gallery-item img {
@@ -213,6 +220,8 @@
             height: 100%;
             object-fit: cover;
             display: block;
+            /* 이미지 드래그 방지 추가 */
+            -webkit-user-drag: none;
         }
 
         .gallery-caption {
@@ -309,7 +318,8 @@
         }
     </style>
 </head>
-<body>
+<!-- oncontextmenu="return false;" 로 오른쪽 마우스 클릭 방지, ondragstart로 드래그 방지 -->
+<body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
     <div class="container">
         <!-- Header -->
         <div class="header">
@@ -365,7 +375,6 @@
         </div>
         <div class="gallery-container">
             <div class="gallery-track" id="galleryTrack">
-                <!-- 이미지 파일명과 하단 설명을 상황에 맞게 변경해주세요 -->
                 <div class="gallery-item">
                     <img src="01. 헤브론병원 전경.jpg" alt="현장 사진 1">
                     <div class="gallery-caption">사진 코멘트</div>
@@ -422,15 +431,16 @@
         </div>
     </div>
 
-    <!-- Active Dot Indicator Sync Script -->
+    <!-- Active Dot Indicator Sync & 우클릭/복사 방지 스크립트 -->
     <script>
+        // 갤러리 스와이프 도트 조작
         const track = document.getElementById('galleryTrack');
         const dots = document.querySelectorAll('.dot');
 
         track.addEventListener('scroll', () => {
             const itemWidth = track.firstElementChild.getBoundingClientRect().width + 12;
             const activeIndex = Math.round(track.scrollLeft / itemWidth);
-            
+
             dots.forEach((dot, index) => {
                 if (index === activeIndex) {
                     dot.classList.add('active');
@@ -438,6 +448,19 @@
                     dot.classList.remove('active');
                 }
             });
+        });
+
+        // 추가적인 우클릭 및 단축키(복사, 개발자도구 등) 차단
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('keydown', function(e) {
+            // F12 키 방지
+            if (e.key === 'F12') {
+                e.preventDefault();
+            }
+            // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U 등 소스보기/개발자도구 방지
+            if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) {
+                e.preventDefault();
+            }
         });
     </script>
 </body>

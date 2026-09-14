@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>위드헤브론 - 현장 소식 리포트</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --teal-deep: #0E3B3D;
+            --teal-deeper: #0A2C2D;
+            --teal-light: #1A5255;
+            --gold: #D9A441;
+            --gold-deep: #B9822B;
+            --bg-sand: #F4EFDF;
+            --border: #E2E8F0;
+            --text-main: #333333;
+            --text-sub: #666666;
+            --danger: #B4483C;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-sand);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+            background: #ffffff;
+            box-shadow: 0 8px 24px rgba(14, 59, 61, 0.08);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Header Area */
+        .header {
+            background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal-deeper) 100%);
+            padding: 40px 24px 32px 24px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--gold);
+            color: var(--teal-deeper);
+            font-size: 13px;
+            font-weight: 700;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-bottom: 14px;
+        }
+
+        .header h1 {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.4;
+            color: #ffffff;
+            word-break: keep-all;
+        }
+
+        /* Message Box Area */
+        .message-box {
+            margin: 24px 24px 0 24px;
+            padding: 22px;
+            background-color: #FAF8F5;
+            border: 1px solid var(--gold);
+            border-radius: 12px;
+        }
+
+        .message-box .greeting {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--teal-deep);
+            margin-bottom: 10px;
+        }
+
+        .message-box p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-main);
+            margin: 0 0 10px 0;
+            word-break: keep-all;
+        }
+
+        .message-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Section Title */
+        .section-title {
+            text-align: center;
+            margin: 36px 0 16px 0;
+        }
+
+        .section-title h2 {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 18px;
+            color: var(--teal-deep);
+            margin: 0;
+            font-weight: 700;
+        }
+
+        /* Story Cards Area */
+        .story-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 0 24px 16px 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .story-title {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--teal-deep);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .story-card p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-sub);
+            margin: 0 0 12px 0;
+            word-break: keep-all;
+        }
+
+        .story-tag {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--teal-light);
+            background-color: #E8F0F0;
+            padding: 3px 10px;
+            border-radius: 6px;
+        }
+
+        /* Video Container Area (16:9 Aspect Ratio) */
+        .video-wrapper {
+            margin: 0 24px 24px 24px;
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Swipe Gallery Area */
+        .gallery-container {
+            position: relative;
+            margin: 0 24px 24px 24px;
+        }
+
+        .gallery-track {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 8px;
+        }
+
+        .gallery-track::-webkit-scrollbar {
+            display: none;
+        }
+        .gallery-track {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .gallery-item {
+            flex: 0 0 85%;
+            scroll-snap-align: center;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            aspect-ratio: 4 / 3;
+            background-color: #f0f0f0;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            -webkit-user-drag: none;
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(14, 59, 61, 0.85), transparent);
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 20px 12px 10px 12px;
+            text-align: center;
+        }
+
+        /* Swipe Dots Indicator */
+        .gallery-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: var(--teal-deep);
+            width: 20px;
+            border-radius: 10px;
+        }
+
+        /* Banner CTA Area */
+        .banner {
+            margin: 24px;
+            background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal-light) 100%);
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .banner h3 {
+            font-family: 'Noto Serif KR', serif;
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            color: var(--gold);
+            font-weight: 700;
+            word-break: keep-all;
+        }
+
+        .banner p {
+            margin: 0 0 20px 0;
+            font-size: 13.5px;
+            color: #E2E8F0;
+            word-break: keep-all;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            display: block;
+            background-color: var(--gold);
+            color: var(--teal-deeper);
+            text-decoration: none;
+            padding: 14px;
+            font-weight: 700;
+            font-size: 15px;
+            border-radius: 30px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--gold-deep);
+            color: #ffffff;
+        }
+
+        .btn-outline {
+            display: block;
+            background-color: transparent;
+            color: #ffffff;
+            border: 1px solid var(--gold);
+            text-decoration: none;
+            padding: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 30px;
+            transition: all 0.2s;
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(217, 164, 65, 0.15);
+        }
+
+        /* Footer Area */
+        .footer {
+            margin-top: auto;
+            background-color: #F8FAFC;
+            padding: 24px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-sub);
+            border-top: 1px solid var(--border);
+        }
+
+        .footer p {
+            margin: 4px 0;
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <span class="badge">위드헤브론 현장 리포트</span>
+            <h1>후원자님의 사랑으로 피어난<br>캄보디아의 희망 소식! 💌</h1>
+        </div>
+
+        <!-- Message Box -->
+        <div class="message-box">
+            <div class="greeting">안녕하세요 후원자님 🏥</div>
+            <p>후원자님께서 보내주시는 따뜻한 관심 덕분에, 캄보디아 헤브론병원의 환우들과 의료진이 큰 위로와 소망을 얻고 있습니다. 💖</p>
+            <p>사랑의 동역을 통해 다시 일어선 캄보디아 환아와 현지 의료진이 전해온 진심 어린 감사의 이야기를 전해드립니다.</p>
+        </div>
+
+        <!-- Video Section -->
+        <div class="section-title">
+            <h2>🎬 현장 영상 보기</h2>
+        </div>
+        <div class="video-wrapper">
+            <iframe 
+                src="https://www.youtube.com/embed/-JAbdhJUvGA" 
+                title="YouTube video player" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <!-- Section Title -->
+        <div class="section-title">
+            <h2>캄보디아 현장의 감사 소식 👇</h2>
+        </div>
+
+        <!-- Story Cards -->
+        <div class="story-card">
+            <div class="story-title">💌 아픔 대신 피어난 아이의 미소</div>
+            <p>(샘플문구)보내주신 사랑 덕분에 이제 아프지 않고 친구들과 마음껏 달릴 수 있게 되었어요. 제게 소중한 내일을 선물해 주셔서 감사합니다!</p>
+            <span class="story-tag">#환아의감사</span>
+            <span class="story-tag">#희망의선물</span>
+        </div>
+
+        <div class="story-card">
+            <div class="story-title">🩺 사람을 살리는 꿈을 품은 청년</div>
+            <p>(샘플문구)후원자님의 동역 덕분에 이곳에서 사람을 살리는 꿈을 키워가고 있습니다. 캄보디아의 이웃들을 깊이 사랑하고 치료하는 신실한 의료진이 되겠습니다.</p>
+            <span class="story-tag">#의료진의다짐</span>
+            <span class="story-tag">#따뜻한동역</span>
+        </div>
+
+        <!-- Swipe Photo Gallery Section -->
+        <div class="section-title">
+            <h2>📸 현장 사진</h2>
+        </div>
+        <div class="gallery-container">
+            <div class="gallery-track" id="galleryTrack">
+                <div class="gallery-item">
+                    <img src="01. 헤브론병원 전경.jpg" alt="현장 사진 1">
+                    <div class="gallery-caption">사진 코멘트</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="20260627 HMC Mobile clinic (49).JPG" alt="현장 사진 2">
+                    <div class="gallery-caption">사진 코멘트</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="20260627 HMC Mobile clinic (38).JPG" alt="현장 사진 3">
+                    <div class="gallery-caption">사진 코멘트</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="20260627 HMC Mobile clinic (56).JPG" alt="현장 사진 4">
+                    <div class="gallery-caption">사진 코멘트</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="260731 시엠립분원 7월 사진 (5).jpg" alt="현장 사진 5">
+                    <div class="gallery-caption">사진 코멘트</div>
+                </div>
+            </div>
+            <!-- Pagination Dots -->
+            <div class="gallery-dots" id="galleryDots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+
+        <!-- 위드헤브론 소개 카드 -->
+        <div class="story-card">
+            <div class="story-title">🏥 사단법인 위드헤브론은?</div>
+            <p>위드헤브론은 캄보디아 헤브론병원을 중심으로 가난과 질병으로 고통받는 이웃들에게 무상 의료 구호와 보건의료 지원을 펼치고 있는 NGO 사단법인입니다.</p>
+            <span class="story-tag">#의료선교</span>
+            <span class="story-tag">#무상의료</span>
+            <span class="story-tag">#보건의료지원</span>
+            <span class="story-tag">#WITHHEBRON</span>
+        </div>
+
+        <!-- Banner CTA Area (홈페이지 및 2025 연차보고서 연결) -->
+        <div class="banner">
+            <h3>"생명을 살리는 헤브론의 이야기"</h3>
+            <p>위드헤브론의 지난 활동과 사역 소식을 확인해 보세요.</p>
+            <div class="btn-group">
+                <!-- 2025 연차보고서 PDF/웹페이지 링크주소를 href에 넣어주세요 -->
+                <a href="https://www.withhebron.org" target="_blank" class="btn-primary">📄 2025년도 연차보고서 보기</a>
+                <!-- 위드헤브론 공식 홈페이지 링크 -->
+                <a href="https://www.withhebron.org" target="_blank" class="btn-outline">🌐 위드헤브론 공식 홈페이지</a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>사단법인 위드헤브론</strong></p>
+            <p>대표전화 : 02-2273-3395 ㅣ 이메일 : admin@withhebron.com</p>
+            <p>서울특별시 마포구 독막로 331 마스터즈타워 2006호</p>
+            <p>© 2026 With Hebron. All rights reserved.</p>
+        </div>
+    </div>
+
+    <!-- Active Dot Indicator Sync & 보안 스크립트 -->
+    <script>
+        const track = document.getElementById('galleryTrack');
+        const dots = document.querySelectorAll('.dot');
+
+        track.addEventListener('scroll', () => {
+            const itemWidth = track.firstElementChild.getBoundingClientRect().width + 12;
+            const activeIndex = Math.round(track.scrollLeft / itemWidth);
+
+            dots.forEach((dot, index) => {
+                if (index === activeIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        });
+
+        // 우클릭 및 개발자도구/소스보기 단축키 방지
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12') {
+                e.preventDefault();
+            }
+            if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
